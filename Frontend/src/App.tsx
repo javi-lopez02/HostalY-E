@@ -9,6 +9,8 @@ import { NextUIProvider } from "@nextui-org/react";
 import Page404 from "./pages/404Page";
 import { Toaster } from "sonner";
 import Oferts from "./pages/Oferts";
+import Gastronomics from "./pages/Gastronomics";
+import Desserts from "./pages/Desserts";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
             <Route element={<Navbar />}>
               <Route path="/" element={<Home />} />
               <Route path="/oferts" element={<Oferts />} />
+              <Route path="/gastronomics" element={<Gastronomics />} />
+              <Route path="/desserts" element={<Desserts />} />
 
               <Route element={<ProtectedRoutes />}></Route>
             </Route>

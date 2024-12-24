@@ -1,4 +1,10 @@
-import { Drawer, DrawerBody, DrawerContent, DrawerHeader, useDisclosure } from "@nextui-org/react";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  useDisclosure,
+} from "@nextui-org/react";
 import { BiSolidDrink } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
 import { FaBowlFood } from "react-icons/fa6";
@@ -60,7 +66,7 @@ export default function DrawerSideBar() {
                     </li>
                     <li>
                       <Link
-                        to={"/categories"}
+                        to={"/oferts"}
                         className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                       >
                         <GiTicket />
@@ -73,8 +79,8 @@ export default function DrawerSideBar() {
                       </Link>
                     </li>
                     <li>
-                      <a
-                        href="#"
+                      <Link
+                        to={"/gastronomics"}
                         className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                       >
                         <FaBowlFood />
@@ -84,11 +90,11 @@ export default function DrawerSideBar() {
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
                           3
                         </span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <Link
-                        to="/users"
+                        to="/drinks"
                         className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                       >
                         <BiSolidDrink />
@@ -102,7 +108,7 @@ export default function DrawerSideBar() {
                     </li>
                     <li>
                       <Link
-                        to="/products"
+                        to="/snacks"
                         className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                       >
                         <IoFastFoodSharp />
@@ -116,7 +122,7 @@ export default function DrawerSideBar() {
                     </li>
                     <li>
                       <Link
-                        to={"/payments"}
+                        to={"/desserts"}
                         className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                       >
                         <PiBowlFoodFill />
@@ -130,7 +136,7 @@ export default function DrawerSideBar() {
                     </li>
                     <li>
                       <Link
-                        to={"/payments"}
+                        to={"/gallery"}
                         className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                       >
                         <RiGalleryFill />
@@ -144,7 +150,7 @@ export default function DrawerSideBar() {
                     </li>
                     <li>
                       <Link
-                        to={"/payments"}
+                        to={"/events"}
                         className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                       >
                         <GrGallery />

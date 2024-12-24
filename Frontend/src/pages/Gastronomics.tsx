@@ -1,16 +1,16 @@
 import { Spinner } from "@nextui-org/react";
-import OfertsCard from "../components/oferts/OfertsCard";
-import useOferts from "../customHooks/useOferts";
+import GastronomicCard from "../components/gastronomics/GastronomicCard";
+import useGastronomics from "../customHooks/useGastronomics";
 import { toast } from "sonner";
 
-export default function Oferts() {
-  const { oferts, loading, error } = useOferts();
+export default function Gastronomics() {
+  const { gastronomics, error, loading } = useGastronomics();
 
   return (
     <div className="p-14 pt-20 md:p-20 flex flex-col bg-gray-50 gap-4 min-h-screen">
       <div className="flex flex-col">
         <h1 className="text-center text-2xl md:text-4xl font-extrabold leading-tight text-gray-900 dark:text-white">
-          Ofertas (8AM - 6PM){" "}
+          Ofertas de Comidas
         </h1>
         <span className="text-center text-lg md:text-xl font-bold leading-tight text-gray-700 dark:text-white">
           Todas las ofertas son para 30 personas
@@ -23,21 +23,22 @@ export default function Oferts() {
           </div>
         )}
 
-        {oferts.length === 0 && !loading && (
+        {gastronomics.length === 0 && !loading && (
           <div className="w-full flex justify-center pt-4">
-            <span className="text-gray-700 font-bold text-lg">
-              No se encontraron Ofertas
+            <span className="text-gray-700 font-bold text-md md:text-lg">
+              No se encontraron Comidas
             </span>
           </div>
         )}
         {!loading && (
           <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {oferts &&
-              oferts.map((ofert) => (
-                <OfertsCard
-                  key={ofert.ofertId}
-                  description={ofert.description}
-                  price={ofert.price}
+            {gastronomics &&
+              gastronomics.map((gastronomic) => (
+                <GastronomicCard
+                  key={gastronomic.gastronomicId}
+                  description={gastronomic.description}
+                  price={gastronomic.price}
+                  image={gastronomic.imagen}
                 />
               ))}
           </div>

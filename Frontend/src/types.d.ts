@@ -10,7 +10,13 @@ export type AuthContextType = {
   isAuth: boolean;
   loading: boolean;
   errors: Array<string>;
-  signIn: ({ username, password }: { username: string; password: string }) => void;
+  signIn: ({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) => void;
   signUp: ({
     password,
     username,
@@ -19,4 +25,24 @@ export type AuthContextType = {
     username: string;
   }) => void;
   logout: () => void;
+};
+
+export type Oferts = {
+  price?: number;
+  ofertId?: number;
+  description?: string;
+};
+
+export type Desserts = {
+  price?: number;
+  dessertId?: number;
+  name?: string;
+  imagen?: string;
+};
+
+export type Gastronomics = {
+  price?: number;
+  gastronomicId?: number;
+  description?: string;
+  imagen?: string;
 };
