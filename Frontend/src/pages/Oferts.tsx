@@ -15,6 +15,9 @@ export default function Oferts() {
         <span className="text-center text-lg md:text-xl font-bold leading-tight text-gray-700 dark:text-white">
           Todas las ofertas son para 30 personas
         </span>
+        <span className="text-center text-lg md:text-xl font-bold leading-tight text-gray-700 dark:text-white">
+          Incluyen la Piscina y el Ranchón
+        </span>
       </div>
       <div>
         {loading && (

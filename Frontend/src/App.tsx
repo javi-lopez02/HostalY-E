@@ -11,6 +11,8 @@ import { Toaster } from "sonner";
 import Oferts from "./pages/Oferts";
 import Gastronomics from "./pages/Gastronomics";
 import Desserts from "./pages/Desserts";
+import Drinks from "./pages/Drinks";
+import Snacks from "./pages/Snacks";
 
 function App() {
   return (
@@ -28,6 +30,9 @@ function App() {
               <Route path="/oferts" element={<Oferts />} />
               <Route path="/gastronomics" element={<Gastronomics />} />
               <Route path="/desserts" element={<Desserts />} />
+              <Route path="/drinks" element={<Drinks />} />
+              <Route path="/snacks" element={<Snacks />} />
+              
 
               <Route element={<ProtectedRoutes />}></Route>
             </Route>

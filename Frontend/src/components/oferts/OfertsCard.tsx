@@ -18,7 +18,7 @@ const OfertsCard: FC<Oferts> = ({ description, price }) => {
           <h1 className="text-xl font-bold leading-tight text-gray-900 dark:text-white">
             Incluye:
           </h1>
-          <div className="text-lg font-semibold leading-tight text-gray-900 dark:text-white">
+          <div className="text-lg font-semibold leading-tight text-justify text-gray-900 dark:text-white">
             {description}
           </div>
         </div>

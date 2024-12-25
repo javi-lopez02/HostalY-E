@@ -9,7 +9,8 @@ export const getDrinks = async (req: Request, res: Response) => {
       select: {
         id: true,
         price: true,
-        name: true
+        name: true,
+        imagen: true
       },
     });
 

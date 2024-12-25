@@ -10,6 +10,7 @@ export const getSnacks = async (req: Request, res: Response) => {
         id: true,
         price: true,
         name: true,
+        imagen: true
       },
     });
 

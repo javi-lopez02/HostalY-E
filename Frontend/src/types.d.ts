@@ -46,3 +46,18 @@ export type Gastronomics = {
   description?: string;
   imagen?: string;
 };
+
+export type Drinks = {
+  price?: number;
+  drinkId?: number;
+  name?: string;
+  imagen?: string;
+};
+
+export type Snacks = {
+  price?: number;
+  snackId?: number;
+  name?: string;
+  imagen?: string;
+};
+

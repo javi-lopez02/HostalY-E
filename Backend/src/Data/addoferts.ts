@@ -14,47 +14,41 @@ async function main() {
     {
       price: 20000,
       description:
-        "Área de la piscina, Área del ranchón, 50 croquetas de pollo, 5 Platos de Chicharritas, Refresco 6lt",
+        "50 croquetas de pollo, 5 Platos de Chicharritas, Refresco 6lt",
     }, // cat-2
     {
       price: 27000,
-      description:
-        "Área de la piscina, Área del ranchón, Ensalada fría, 50 croquetas de pollo",
+      description: "Ensalada fría, 50 croquetas de pollo",
     }, // cat-3
     {
       price: 28000,
-      description:
-        "Área de la piscina, Área del ranchón, 60 mini hamburguesas de pollo, 1 caja de cerveza",
+      description: "60 mini hamburguesas de pollo, 1 caja de cerveza",
     }, // cat-4
     {
       price: 28000,
-      description:
-        "Área de la piscina, Área del ranchón, 30 hamburguesas de pollo, 1 caja de cerveza",
+      description: "30 hamburguesas de pollo, 1 caja de cerveza",
     }, // cat-5
     {
       price: 30000,
-      description:
-        "Área de la piscina, Área del ranchón, Caldosa, 1 caja de cerveza",
+      description: "Caldosa, 1 caja de cerveza",
     }, // cat-6
     {
       price: 36000,
       description:
-        "Área de la piscina, Área del ranchón, Bocaditos con lechón (Ensalada y Mojito) ,Refresco 6lt, 1 caja de cerveza",
+        "Bocaditos con lechón (Ensalada y Mojito) ,Refresco 6lt, 1 caja de cerveza",
     }, // cat-7
     {
       price: 39000,
-      description:
-        "Área de la piscina, Área del ranchón, Arroz Frito, Viandas, Ensalada",
+      description: "Arroz Frito, Viandas y Ensalada",
     }, // cat-8
     {
       price: 39000,
-      description:
-        "Área de la piscina, Área del ranchón, Arroz Congris, Vianda, Ensalada",
+      description: "Arroz Congris, Vianda y Ensalada",
     }, // cat-9
     {
       price: 50000,
       description:
-        "Área de la piscina, Área del ranchón, Arroz congris, Chuleta de Cerdo, Viandas y Ensalada, 1 caja de cerveza",
+        "Arroz congris, Chuleta de Cerdo, Viandas y Ensalada, 1 caja de cerveza",
     }, // cat-10
   ];
 
@@ -69,60 +63,60 @@ async function main() {
   const gastronomicsData = [
     {
       description: "Caldoza",
-      imagen: "https://m.media-amazon.com/images/I/81Pzsse6JFL._AC_SY500_.jpg",
+      imagen: "https://rent-house-six.vercel.app/images/comidas/caldosa.jpg",
       price: 10000,
     },
     {
       description: "Espaguetis de Jamón y Queso",
-      imagen: "https://m.media-amazon.com/images/I/51BJiFN4wpL._SL1000_.jpg",
+      imagen: "https://rent-house-six.vercel.app/images/comidas/espaguetis.jpg",
       price: 20000,
     },
     {
       description: "Arroz Congris, Pollo Asado, Viandas y Ensaladas",
-      imagen: "https://m.media-amazon.com/images/I/41llLZM3HTL._AC_SL1200_.jpg",
+      imagen: "https://rent-house-six.vercel.app/images/comidas/congris.jpg",
       price: 24000,
     },
     {
       description: "Arroz Frito, Viandas y Ensaladas",
       price: 24000,
       imagen:
-        "https://m.media-amazon.com/images/I/71yUVO4PktL._AC_UF1000,1000_QL80_.jpg",
+        "https://rent-house-six.vercel.app/images/comidas/arroz%20frito.jpg",
     },
     {
       description: "Arroz Amarillo con Carne y Maiz, Viandas y Ensaladas",
       price: 24000,
       imagen:
-        "https://cdn.quicksell.co/-M5mfJ9Y8f2UdhwcIe3E/product/-NQCVY0CxM0tXyHTwq09.jpg",
+        "https://rent-house-six.vercel.app/images/comidas/arroz%20amarillo.jpg",
     },
     {
       description:
         "Arroz Congris, Chuleta o Bistec de Cerdo, Viandas y Ensaladas",
       price: 30000,
       imagen:
-        "https://http2.mlstatic.com/D_NQ_NP_825517-MCO74549447467_022024-O.webp",
+        "https://rent-house-six.vercel.app/images/comidas/Congr%C3%AD.jpg",
     },
     {
       description: "Arroz Congris, Pollo a la Barbacoa, Viandas y Ensaladas",
       price: 30000,
       imagen:
-        "https://cdn.quicksell.co/-MDLfK-fgx0tgM9YssWH/product/-O0RKyNsG-TJdJFoZVy7.jpg",
+        "https://rent-house-six.vercel.app/images/comidas/congris%20barbacoa.jpg",
     },
     {
       description: "Arroz Congris, Bistec de Pechuga, Viandas y Ensaladas",
       price: 30000,
       imagen:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8bcnixxCzsfLpF7eL1x-hdeHXNZWZL54Tg&s",
+        "https://rent-house-six.vercel.app/images/comidas/congris%20pechga.jpg",
     },
     {
       description: "Arroz y Frijoles, Fajitas de Pollo, Viandas y Ensaladas",
       price: 30000,
-      imagen:
-        "https://moalotech.com/wp-content/uploads/cable-harvic-tipo-c.png",
+      imagen: "https://rent-house-six.vercel.app/images/comidas/frijoles.jpg",
     },
     {
       description: "Lasaña a la Boloñesa de Jamón y Queso",
       price: 30000,
-      imagen: "https://i.blogs.es/c3c8ec/mi-67w-soniccharge-2/840_560.jpg",
+      imagen:
+        "https://rent-house-six.vercel.app/images/comidas/lasa%C3%B1a.jpg",
     },
   ];
 
@@ -138,64 +132,63 @@ async function main() {
   const dessertsData = [
     {
       name: "Panquecitos",
-      imagen: "https://m.media-amazon.com/images/I/81Pzsse6JFL._AC_SY500_.jpg",
+      imagen:
+        "https://i.pinimg.com/236x/9e/c4/f8/9ec4f835c10bdab5768d53289e89175e.jpg",
       price: 1800,
     },
     {
       name: "Emp. de Guayaba",
-      imagen: "https://m.media-amazon.com/images/I/51BJiFN4wpL._SL1000_.jpg",
+      imagen:
+        "https://i.pinimg.com/236x/9f/b7/a3/9fb7a3fc7c36395fd49cec2a8c165143.jpg",
       price: 1800,
     },
     {
       name: "Emp. de Coco",
-      imagen: "https://m.media-amazon.com/images/I/41llLZM3HTL._AC_SL1200_.jpg",
+      imagen:
+        "https://i.pinimg.com/236x/42/5b/66/425b6646337129682be8fc4fbd919044.jpg",
       price: 2100,
     },
     {
       name: "Gelatina",
       price: 3000,
-      imagen:
-        "https://m.media-amazon.com/images/I/71yUVO4PktL._AC_UF1000,1000_QL80_.jpg",
+      imagen: "https://rent-house-six.vercel.app/images/postres/gelatina.jpg",
     },
     {
       name: "Natilla",
       price: 3000,
       imagen:
-        "https://cdn.quicksell.co/-M5mfJ9Y8f2UdhwcIe3E/product/-NQCVY0CxM0tXyHTwq09.jpg",
+        "https://i.pinimg.com/236x/5a/9a/3a/5a9a3a8ee9be117a5ad8d940e1ca9227.jpg",
     },
     {
-      name:
-        "NatiFlan",
+      name: "NatiFlan",
       price: 3000,
-      imagen:
-        "https://http2.mlstatic.com/D_NQ_NP_825517-MCO74549447467_022024-O.webp",
+      imagen: "https://rent-house-six.vercel.app/images/postres/flan.jpg",
     },
     {
       name: "Arroz con Leche",
       price: 5000,
       imagen:
-        "https://cdn.quicksell.co/-MDLfK-fgx0tgM9YssWH/product/-O0RKyNsG-TJdJFoZVy7.jpg",
+        "https://i.pinimg.com/236x/8b/7e/02/8b7e02c7d140f26cb34c505aadd8205c.jpg",
     },
     {
       name: "Helado",
       price: 6000,
-      imagen:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8bcnixxCzsfLpF7eL1x-hdeHXNZWZL54Tg&s",
+      imagen: "https://rent-house-six.vercel.app/images/postres/helado.jpg",
     },
     {
       name: "Pudín",
       price: 10000,
-      imagen:
-        "https://moalotech.com/wp-content/uploads/cable-harvic-tipo-c.png",
+      imagen: "https://rent-house-six.vercel.app/images/postres/pudin.jpg",
     },
     {
       name: "Ensalada Fría",
       price: 10000,
-      imagen: "https://i.blogs.es/c3c8ec/mi-67w-soniccharge-2/840_560.jpg",
+      imagen:
+        "https://i.pinimg.com/236x/be/95/df/be95dfde5ec959e81d7184d48dad7e39.jpg",
     },
   ];
 
-  // Insertar dessertsos en la base de datos
+  // Insertar desserts en la base de datos
   for (const dessertData of dessertsData) {
     await prisma.desserts.create({
       data: dessertData,

@@ -10,7 +10,7 @@ const GastronomicCard: FC<Oferts> = ({ description, price, image }) => {
   return (
     <div className="border border-gray-200 bg-white p-6 shadow-sm rounded-3xl ">
       <div className="h-40 w-full">
-        <img className="mx-auto h-full rounded-full" src={image} />
+        <img className="mx-auto h-full w-full rounded-[50%]" src={image} />
       </div>
       <div className="pt-6">
         <div className="text-lg font-semibold leading-tight text-gray-900 dark:text-white">
