@@ -38,7 +38,7 @@ export default function Oferts() {
             {oferts &&
               oferts.map((ofert) => (
                 <OfertsCard
-                  key={ofert.ofertId}
+                  key={ofert.id}
                   description={ofert.description}
                   price={ofert.price}
                 />

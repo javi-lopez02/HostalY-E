@@ -29,35 +29,46 @@ export type AuthContextType = {
 
 export type Oferts = {
   price?: number;
-  ofertId?: number;
+  id?: number;
   description?: string;
 };
 
 export type Desserts = {
   price?: number;
-  dessertId?: number;
+  id?: number;
   name?: string;
   imagen?: string;
 };
 
 export type Gastronomics = {
   price?: number;
-  gastronomicId?: number;
+  id?: number;
   description?: string;
   imagen?: string;
 };
 
 export type Drinks = {
   price?: number;
-  drinkId?: number;
+  id?: number;
   name?: string;
   imagen?: string;
 };
 
 export type Snacks = {
   price?: number;
-  snackId?: number;
+  id?: number;
   name?: string;
   imagen?: string;
 };
 
+export type Gallery = {
+  id?: number;
+  description?: string;
+  imagen?: string;
+};
+
+export type Events = {
+  id?: number;
+  description?: string;
+  imagen?: string;
+};

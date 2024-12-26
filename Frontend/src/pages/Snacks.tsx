@@ -30,7 +30,7 @@ export default function Snacks() {
             {snacks &&
               snacks.map((snack) => (
                 <SnacksCard
-                  key={snack.snackId}
+                  key={snack.id}
                   image={snack.imagen}
                   name={snack.name}
                   price={snack.price}

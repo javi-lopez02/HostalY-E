@@ -13,6 +13,8 @@ import Gastronomics from "./pages/Gastronomics";
 import Desserts from "./pages/Desserts";
 import Drinks from "./pages/Drinks";
 import Snacks from "./pages/Snacks";
+import Gallery from "./pages/Gallery";
+import Events from "./pages/Events";
 
 function App() {
   return (
@@ -32,7 +34,8 @@ function App() {
               <Route path="/desserts" element={<Desserts />} />
               <Route path="/drinks" element={<Drinks />} />
               <Route path="/snacks" element={<Snacks />} />
-              
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/events" element={<Events />} />
 
               <Route element={<ProtectedRoutes />}></Route>
             </Route>

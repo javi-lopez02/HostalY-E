@@ -35,7 +35,7 @@ export default function Desserts() {
             {desserts &&
               desserts.map((dessert) => (
                 <DessertsCard
-                  key={dessert.dessertId}
+                  key={dessert.id}
                   name={dessert.name}
                   price={dessert.price}
                   image={dessert.imagen}

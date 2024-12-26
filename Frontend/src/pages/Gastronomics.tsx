@@ -35,7 +35,7 @@ export default function Gastronomics() {
             {gastronomics &&
               gastronomics.map((gastronomic) => (
                 <GastronomicCard
-                  key={gastronomic.gastronomicId}
+                  key={gastronomic.id}
                   description={gastronomic.description}
                   price={gastronomic.price}
                   image={gastronomic.imagen}
