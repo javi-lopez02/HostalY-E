@@ -11,6 +11,7 @@ export const getGastronomic = async (req: Request, res: Response) => {
         imagen: true,
         price: true,
         description: true,
+        createdAt: true,
       },
     });
 

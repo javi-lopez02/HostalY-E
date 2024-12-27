@@ -10,6 +10,7 @@ export const getOfert = async (req: Request, res: Response) => {
         id: true,
         price: true,
         description: true,
+        createdAt: true
       },
     });
 

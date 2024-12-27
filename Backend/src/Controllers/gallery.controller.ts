@@ -10,6 +10,7 @@ export const getGallery = async (req: Request, res: Response) => {
         id: true,
         description: true,
         imagen: true,
+        createdAt: true   
       },
     });
 

@@ -10,7 +10,8 @@ export const getDesserts = async (req: Request, res: Response) => {
         id: true,
         price: true,
         imagen: true,
-        name: true
+        name: true,
+        createdAt: true,
       },
     });
 
