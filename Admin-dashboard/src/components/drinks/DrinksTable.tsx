@@ -25,6 +25,7 @@ import {
   Tooltip,
   Spinner,
   User,
+  useDisclosure,
 } from "@nextui-org/react";
 import { type Drinks } from "../../type";
 import {
@@ -36,6 +37,7 @@ import {
 } from "../Icons";
 import useDrinks from "../../customHooks/useDrinks";
 import { toast } from "sonner";
+import ModalAddDrinks from "./ModalAddDrinks";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -56,6 +58,7 @@ const INITIAL_VISIBLE_COLUMNS = ["price", "name", "actions", "createdAt"];
 
 export default function DrinksTable() {
   const { drinks, error, loading } = useDrinks();
+  const {isOpen, onOpen, onClose} = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
 
@@ -165,7 +168,7 @@ export default function DrinksTable() {
       case "price":
         return (
           <div className="flex">
-            <p className="text-bold text-small capitalize">{snack.price}</p>
+            <p className="text-bold text-small capitalize">${snack.price}</p>
           </div>
         );
       case "createdAt": {
@@ -271,9 +274,10 @@ export default function DrinksTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />}>
+            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
               Nueva Bebida
             </Button>
+            <ModalAddDrinks isOpen={isOpen} onClose={onClose}/>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -301,6 +305,9 @@ export default function DrinksTable() {
     drinks?.length,
     onRowsPerPageChange,
     onClear,
+    onClose,
+    onOpen,
+    isOpen
   ]);
 
   const bottomContent = useMemo(() => {

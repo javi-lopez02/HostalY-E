@@ -25,6 +25,7 @@ import {
   Tooltip,
   Spinner,
   User,
+  useDisclosure,
 } from "@nextui-org/react";
 import { type Gastronomics } from "../../type";
 import {
@@ -36,6 +37,7 @@ import {
 } from "../Icons";
 import useGastronomics from "../../customHooks/useGastronomics";
 import { toast } from "sonner";
+import ModalAddGastronomics from "./ModalAddGastronomic";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -61,6 +63,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 export default function GastronomicsTable() {
   const { gastronomics, error, loading } = useGastronomics();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
 
@@ -176,7 +179,7 @@ export default function GastronomicsTable() {
           return (
             <div className="flex">
               <p className="text-bold text-small capitalize">
-                {gastronomic.price}
+                ${gastronomic.price}
               </p>
             </div>
           );
@@ -285,9 +288,10 @@ export default function GastronomicsTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />}>
+            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
               Nueva Comida
             </Button>
+            <ModalAddGastronomics isOpen={isOpen} onClose={onClose} />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -315,6 +319,9 @@ export default function GastronomicsTable() {
     gastronomics?.length,
     onRowsPerPageChange,
     onClear,
+    isOpen,
+    onClose,
+    onOpen,
   ]);
 
   const bottomContent = useMemo(() => {

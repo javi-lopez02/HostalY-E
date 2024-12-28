@@ -25,6 +25,7 @@ import {
   Tooltip,
   Spinner,
   User,
+  useDisclosure,
 } from "@nextui-org/react";
 import { type Desserts } from "../../type";
 import {
@@ -36,6 +37,7 @@ import {
 } from "../Icons";
 import useDesserts from "../../customHooks/useDesserts";
 import { toast } from "sonner";
+import ModalAddDessert from "./ModalAddDessert";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -56,6 +58,7 @@ const INITIAL_VISIBLE_COLUMNS = ["name", "price", "actions", "createdAt"];
 
 export default function DessertsTable() {
   const { desserts, error, loading } = useDesserts();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
 
@@ -271,9 +274,10 @@ export default function DessertsTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />}>
+            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
               Nuevo Postre
             </Button>
+            <ModalAddDessert isOpen={isOpen} onClose={onClose} />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -301,6 +305,9 @@ export default function DessertsTable() {
     desserts?.length,
     onRowsPerPageChange,
     onClear,
+    onClose,
+    isOpen,
+    onOpen,
   ]);
 
   const bottomContent = useMemo(() => {

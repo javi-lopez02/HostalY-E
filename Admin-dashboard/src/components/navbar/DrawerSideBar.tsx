@@ -18,10 +18,24 @@ import { Link } from "react-router-dom";
 import useUser from "../../customHooks/useUser";
 import { MdLogout } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
+import useOferts from "../../customHooks/useOferts";
+import useGastronomics from "../../customHooks/useGastronomics";
+import useDesserts from "../../customHooks/useDesserts";
+import useDrinks from "../../customHooks/useDrinks";
+import useSnacks from "../../customHooks/useSnacks";
+import useEvents from "../../customHooks/useEvents";
+import useGallery from "../../customHooks/useGallery";
 
 export default function DrawerSideBar() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { users } = useUser();
+  const { oferts } = useOferts();
+  const { gastronomics } = useGastronomics();
+  const { desserts } = useDesserts();
+  const { drinks } = useDrinks();
+  const { snacks } = useSnacks();
+  const { events } = useEvents();
+  const { gallery } = useGallery();
   const { logout } = useAuth();
 
   return (
@@ -93,7 +107,7 @@ export default function DrawerSideBar() {
                           Oferts
                         </span>
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
-                          15
+                          {oferts && oferts.length}
                         </span>
                       </Link>
                     </li>
@@ -107,7 +121,7 @@ export default function DrawerSideBar() {
                           Gastronomic
                         </span>
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
-                          3
+                          {gastronomics && gastronomics.length}
                         </span>
                       </Link>
                     </li>
@@ -121,7 +135,7 @@ export default function DrawerSideBar() {
                           Drinks
                         </span>
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
-                          6
+                          {drinks && drinks.length}
                         </span>
                       </Link>
                     </li>
@@ -135,7 +149,7 @@ export default function DrawerSideBar() {
                           Snacks
                         </span>
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
-                          168
+                          {snacks && snacks.length}
                         </span>
                       </Link>
                     </li>
@@ -149,7 +163,7 @@ export default function DrawerSideBar() {
                           Desserts
                         </span>
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
-                          15
+                          {desserts && desserts.length}
                         </span>
                       </Link>
                     </li>
@@ -163,7 +177,7 @@ export default function DrawerSideBar() {
                           Gallery
                         </span>
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
-                          15
+                          {gallery && gallery.length}
                         </span>
                       </Link>
                     </li>
@@ -177,7 +191,7 @@ export default function DrawerSideBar() {
                           Events
                         </span>
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
-                          15
+                          {events && events.length}
                         </span>
                       </Link>
                     </li>

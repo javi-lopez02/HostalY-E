@@ -24,6 +24,7 @@ import {
   SortDescriptor,
   Tooltip,
   Spinner,
+  useDisclosure,
 } from "@nextui-org/react";
 import { type Oferts } from "../../type";
 import {
@@ -35,6 +36,7 @@ import {
 } from "../Icons";
 import useOferts from "../../customHooks/useOferts";
 import { toast } from "sonner";
+import ModalAddOferts from "./ModalAddOferts";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -51,10 +53,16 @@ const columns = [
   { name: "ACTIONS", uid: "actions" },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["price", "description", "actions", "createdAt"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "price",
+  "description",
+  "actions",
+  "createdAt",
+];
 
 export default function OfertsTable() {
   const { oferts, error, loading } = useOferts();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
 
@@ -143,8 +151,8 @@ export default function OfertsTable() {
     switch (columnKey) {
       case "price":
         return (
-          <div className="flex justify-center">
-            <p className={`text-bold text-small capitalize`}>{ofert.price}</p>
+          <div className="flex text-center">
+            <p className={`text-bold text-small capitalize`}>${ofert.price}</p>
           </div>
         );
 
@@ -259,9 +267,10 @@ export default function OfertsTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />}>
+            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
               Nueva Oferta
             </Button>
+            <ModalAddOferts isOpen={isOpen} onClose={onClose} />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -289,6 +298,9 @@ export default function OfertsTable() {
     oferts?.length,
     onRowsPerPageChange,
     onClear,
+    isOpen,
+    onClose,
+    onOpen,
   ]);
 
   const bottomContent = useMemo(() => {
