@@ -28,14 +28,14 @@ export interface Users {
 
 export type Oferts = {
   price: number;
-  id: number;
+  id: string;
   description: string;
   createdAt: string;
 };
 
 export type Desserts = {
   price: number;
-  id: number;
+  id: string;
   name: string;
   imagen: string;
   createdAt: string;
@@ -43,7 +43,7 @@ export type Desserts = {
 
 export type Gastronomics = {
   price: number;
-  id: number;
+  id: string;
   description: string;
   imagen: string;
   createdAt: string;
@@ -51,7 +51,7 @@ export type Gastronomics = {
 
 export type Drinks = {
   price: number;
-  id: number;
+  id: string;
   name: string;
   imagen: string;
   createdAt: string;
@@ -59,21 +59,21 @@ export type Drinks = {
 
 export type Snacks = {
   price: number;
-  id: number;
+  id: string;
   name: string;
   imagen: string;
   createdAt: string;
 };
 
 export type Gallery = {
-  id: number;
+  id: string;
   description: string;
   imagen: string;
   createdAt: string;
 };
 
 export type Events = {
-  id: number;
+  id: string;
   description: string;
   imagen: string;
   createdAt: string;

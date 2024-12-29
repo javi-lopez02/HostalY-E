@@ -38,6 +38,7 @@ import {
 import useDesserts from "../../customHooks/useDesserts";
 import { toast } from "sonner";
 import ModalAddDessert from "./ModalAddDessert";
+import { deleteDessertRequest } from "../../services/desserts";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -57,7 +58,9 @@ const columns = [
 const INITIAL_VISIBLE_COLUMNS = ["name", "price", "actions", "createdAt"];
 
 export default function DessertsTable() {
-  const { desserts, error, loading } = useDesserts();
+  const { desserts, error, loading, setDesserts } = useDesserts();
+  const [selectedDessert, setSelectedDessert] = useState<Desserts | null>(null);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
@@ -141,64 +144,102 @@ export default function DessertsTable() {
     sortDescriptor?.direction,
   ]);
 
-  const renderCell = useCallback((dessert: Desserts, columnKey: Key) => {
-    const cellValue = dessert[columnKey as keyof Desserts];
+  const renderCell = useCallback(
+    (dessert: Desserts, columnKey: Key) => {
+      const cellValue = dessert[columnKey as keyof Desserts];
 
-    switch (columnKey) {
-      case "name":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: dessert.imagen }}
-            name={
-              <span
-                style={{
-                  display: "inline-block",
-                  maxWidth: "250px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {dessert.name}
-              </span>
-            }
-          />
-        );
+      const handleEditProduct = (dessert: Desserts) => {
+        setSelectedDessert(dessert);
+        onOpen();
+      };
 
-      case "price":
-        return (
-          <div className="flex">
-            <p className="text-bold text-small capitalize">${dessert.price}</p>
-          </div>
-        );
-      case "createdAt": {
-        return (
-          <div className="flex justify-center">
-            <p className={`text-bold text-small capitalize`}>
-              {formatearFecha(dessert.createdAt)}
-            </p>
-          </div>
-        );
+      const handleDelete = (id: string) => {
+          deleteDessertRequest(id)
+            .then(() => {
+              toast.success("Postre eliminado con exito");
+              setDesserts((prev) => {
+                return prev
+                  ? prev.filter((dessert) => {
+                      return dessert.id !== id;
+                    })
+                  : null;
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              toast.error("Error al eliminar el Postre");
+            });
+        };
+
+      switch (columnKey) {
+        case "name":
+          return (
+            <User
+              avatarProps={{ radius: "lg", src: dessert.imagen }}
+              name={
+                <span
+                  style={{
+                    display: "inline-block",
+                    maxWidth: "250px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {dessert.name}
+                </span>
+              }
+            />
+          );
+
+        case "price":
+          return (
+            <div className="flex">
+              <p className="text-bold text-small capitalize">
+                ${dessert.price}
+              </p>
+            </div>
+          );
+        case "createdAt": {
+          return (
+            <div className="flex justify-center">
+              <p className={`text-bold text-small capitalize`}>
+                {formatearFecha(dessert.createdAt)}
+              </p>
+            </div>
+          );
+        }
+        case "actions":
+          return (
+            <div className="relative flex justify-center items-center gap-2">
+              <Tooltip content="Edit dessert">
+                <button
+                  onClick={() => {
+                    handleEditProduct(dessert);
+                  }}
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                >
+                  <EditIcon />
+                </button>
+              </Tooltip>
+              <Tooltip color="danger" content="Delete dessert">
+                <button
+                  onClick={() => {
+                    handleDelete(dessert.id);
+                  }}
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
+                >
+                  <DeleteIcon />
+                </button>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return String(cellValue);
       }
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Tooltip content="Edit dessert">
-              <button className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </button>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete dessert">
-              <button className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </button>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return String(cellValue);
-    }
-  }, []);
+    },
+    [onOpen, setDesserts]
+  );
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -236,6 +277,10 @@ export default function DessertsTable() {
   }, []);
 
   const topContent = useMemo(() => {
+    const handleAddProduct = () => {
+      setSelectedDessert(null);
+      onOpen();
+    };
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -274,10 +319,13 @@ export default function DessertsTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
+            <Button
+              color="warning"
+              endContent={<PlusIcon />}
+              onPress={handleAddProduct}
+            >
               Nuevo Postre
             </Button>
-            <ModalAddDessert isOpen={isOpen} onClose={onClose} />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -305,8 +353,6 @@ export default function DessertsTable() {
     desserts?.length,
     onRowsPerPageChange,
     onClear,
-    onClose,
-    isOpen,
     onOpen,
   ]);
 
@@ -397,6 +443,12 @@ export default function DessertsTable() {
           )}
         </TableBody>
       </Table>
+      <ModalAddDessert
+        isOpen={isOpen}
+        onClose={onClose}
+        setDesserts={setDesserts}
+        {...selectedDessert}
+      />
     </>
   );
 }

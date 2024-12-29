@@ -43,7 +43,7 @@ const ModalAddUser: FC<Props> = ({
   const [loading, setLoading] = useState(false);
 
   const [imageUrl, setImageUrl] = useState("./Logo.png");
-  const [selectedRole, setSelectedRole] = useState<string | null >();
+  const [selectedRole, setSelectedRole] = useState<string | null>();
 
   useEffect(() => {
     if (id) {
@@ -90,7 +90,10 @@ const ModalAddUser: FC<Props> = ({
       setLoading(false);
       return;
     }
-    if ((!inputPasswordConfirm || inputPasswordConfirm !== inputPassword) && !id) {
+    if (
+      (!inputPasswordConfirm || inputPasswordConfirm !== inputPassword) &&
+      !id
+    ) {
       toast.error("Las contraseñas no coinciden.");
       setLoading(false);
       return;
@@ -115,7 +118,7 @@ const ModalAddUser: FC<Props> = ({
             });
             return [user, ...userFilter];
           });
-          toast.success("Usuario creacto con exito");
+          toast.success("Usuario editado con exito");
         })
         .catch((err) => {
           console.log(err);
@@ -161,7 +164,8 @@ const ModalAddUser: FC<Props> = ({
             <>
               <ModalHeader className="flex items-end  space-x-2 gap-1 font-[sans-serif] ">
                 <img src="./Logo.png" alt="Logo reycel" className="w-10 h-8" />
-                <h1 className="text-2xl font-bold">Agregar Usuario</h1>
+                {!id && <h1 className="text-2xl font-bold">Agregar Usuario</h1>}
+                {id && <h1 className="text-2xl font-bold">Editar Usuario</h1>}
               </ModalHeader>
               <ModalBody>
                 <Form onSubmit={handleSubmit}>
@@ -185,7 +189,6 @@ const ModalAddUser: FC<Props> = ({
                         variant="bordered"
                         labelPlacement="outside"
                       />
-                      
                     </div>
                     <div className="flex flex-col gap-4 w-full">
                       <Input
@@ -237,7 +240,7 @@ const ModalAddUser: FC<Props> = ({
                       </Select>
                     </div>
                   </div>
-                 
+
                   <div className="flex min-w-full justify-end mt-5 gap-3">
                     <Button color="danger" variant="light" onPress={onClose}>
                       Cancelar

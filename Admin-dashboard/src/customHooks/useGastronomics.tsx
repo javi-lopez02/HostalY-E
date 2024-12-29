@@ -3,7 +3,7 @@ import { Gastronomics } from "../type";
 import { getGastronomicsRequest } from "../services/gastronomics";
 
 function useGastronomics() {
-  const [gastronomics, setGastronomics] = useState<Gastronomics[] >([]);
+  const [gastronomics, setGastronomics] = useState<Gastronomics[] | null >([]);
   const [error, setError] = useState<Array<string> | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +23,7 @@ function useGastronomics() {
       });
   }, []);
 
-  return { gastronomics, error, loading };
+  return { gastronomics, error, loading, setGastronomics };
 }
 
 export default useGastronomics;

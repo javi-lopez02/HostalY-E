@@ -4,7 +4,7 @@ import { getGalleryRequest } from "../services/gallery";
 
 
 function useGallery() {
-  const [gallery, setGallery] = useState<Gallery[]>([]);
+  const [gallery, setGallery] = useState<Gallery[] | null>([]);
   const [error, setError] = useState<Array<string> | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -24,7 +24,7 @@ function useGallery() {
       });
   }, []);
 
-  return { gallery, error, loading };
+  return { gallery, error, loading, setGallery };
 }
 
 export default useGallery;

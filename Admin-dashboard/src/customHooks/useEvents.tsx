@@ -4,7 +4,7 @@ import { getEventsRequest } from "../services/events";
 
 
 function useEvents() {
-  const [events, setEvents] = useState<Events[]>([]);
+  const [events, setEvents] = useState<Events[] | null>([]);
   const [error, setError] = useState<Array<string> | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -24,7 +24,7 @@ function useEvents() {
       });
   }, []);
 
-  return { events, error, loading };
+  return { events, error, loading, setEvents };
 }
 
 export default useEvents;

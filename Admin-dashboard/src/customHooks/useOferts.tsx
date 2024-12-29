@@ -3,7 +3,7 @@ import { getOfertsRequest } from "../services/oferts";
 import { Oferts } from "../type";
 
 function useOferts() {
-  const [oferts, setOferts] = useState<Oferts[] >([]);
+  const [oferts, setOferts] = useState<Oferts[] | null >([]);
   const [error, setError] = useState<Array<string> | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +23,7 @@ function useOferts() {
       });
   }, []);
 
-  return { oferts, error, loading };
+  return { oferts, error, loading, setOferts };
 }
 
 export default useOferts;

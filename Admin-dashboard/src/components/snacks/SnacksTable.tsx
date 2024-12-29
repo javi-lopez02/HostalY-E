@@ -38,6 +38,7 @@ import {
 import useSnacks from "../../customHooks/useSnacks";
 import { toast } from "sonner";
 import ModalAddSnacks from "./ModalAddSnacks";
+import { deleteSnackRequest } from "../../services/snacks";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -57,7 +58,9 @@ const columns = [
 const INITIAL_VISIBLE_COLUMNS = ["price", "name", "actions", "createdAt"];
 
 export default function SnacksTable() {
-  const { snacks, error, loading } = useSnacks();
+  const { snacks, error, loading, setSnacks } = useSnacks();
+  const [selectedSnack, setSelectedSnack] = useState<Snacks | null>(null);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
@@ -141,64 +144,96 @@ export default function SnacksTable() {
     sortDescriptor?.direction,
   ]);
 
-  const renderCell = useCallback((snack: Snacks, columnKey: Key) => {
-    const cellValue = snack[columnKey as keyof Snacks];
+  const renderCell = useCallback(
+    (snack: Snacks, columnKey: Key) => {
+      const cellValue = snack[columnKey as keyof Snacks];
 
-    switch (columnKey) {
-      case "name":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: snack.imagen }}
-            name={
-              <span
-                style={{
-                  display: "inline-block",
-                  maxWidth: "250px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {snack.name}
-              </span>
-            }
-          />
-        );
+      const handleEditSnack = (snack: Snacks) => {
+        setSelectedSnack(snack);
+        onOpen();
+      };
 
-      case "price":
-        return (
-          <div className="flex">
-            <p className="text-bold text-small capitalize">${snack.price}</p>
-          </div>
-        );
-      case "createdAt": {
-        return (
-          <div className="flex justify-center">
-            <p className={`text-bold text-small capitalize`}>
-              {formatearFecha(snack.createdAt)}
-            </p>
-          </div>
-        );
+      const handleDelete = (id: string) => {
+        deleteSnackRequest(id)
+          .then(() => {
+            toast.success("Merienda eliminada con exito");
+            setSnacks((prev) => {
+              return prev
+                ? prev.filter((snack) => {
+                    return snack.id !== id;
+                  })
+                : null;
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("Error al eliminar la Merienda");
+          });
+      };
+
+      switch (columnKey) {
+        case "name":
+          return (
+            <User
+              avatarProps={{ radius: "lg", src: snack.imagen }}
+              name={
+                <span
+                  style={{
+                    display: "inline-block",
+                    maxWidth: "250px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {snack.name}
+                </span>
+              }
+            />
+          );
+
+        case "price":
+          return (
+            <div className="flex">
+              <p className="text-bold text-small capitalize">${snack.price}</p>
+            </div>
+          );
+        case "createdAt": {
+          return (
+            <div className="flex justify-center">
+              <p className={`text-bold text-small capitalize`}>
+                {formatearFecha(snack.createdAt)}
+              </p>
+            </div>
+          );
+        }
+        case "actions":
+          return (
+            <div className="relative flex justify-center items-center gap-2">
+              <Tooltip content="Edit snack">
+                <button
+                  onClick={() => handleEditSnack(snack)}
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                >
+                  <EditIcon />
+                </button>
+              </Tooltip>
+              <Tooltip color="danger" content="Delete snack">
+                <button
+                  onClick={() => handleDelete(snack.id)}
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
+                >
+                  <DeleteIcon />
+                </button>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return String(cellValue);
       }
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Tooltip content="Edit snack">
-              <button className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </button>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete snack">
-              <button className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </button>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return String(cellValue);
-    }
-  }, []);
+    },
+    [onOpen, setSnacks]
+  );
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -236,6 +271,10 @@ export default function SnacksTable() {
   }, []);
 
   const topContent = useMemo(() => {
+    const handleAddProduct = () => {
+      setSelectedSnack(null);
+      onOpen();
+    };
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -274,10 +313,19 @@ export default function SnacksTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
+            <Button
+              color="warning"
+              endContent={<PlusIcon />}
+              onPress={handleAddProduct}
+            >
               Nueva Merienda
             </Button>
-            <ModalAddSnacks isOpen={isOpen} onClose={onClose} />
+            <ModalAddSnacks
+              isOpen={isOpen}
+              onClose={onClose}
+              setSnacks={setSnacks}
+              {...selectedSnack}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -308,6 +356,8 @@ export default function SnacksTable() {
     isOpen,
     onClose,
     onOpen,
+    setSnacks,
+    selectedSnack,
   ]);
 
   const bottomContent = useMemo(() => {

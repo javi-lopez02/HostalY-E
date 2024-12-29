@@ -38,6 +38,7 @@ import {
 import useGastronomics from "../../customHooks/useGastronomics";
 import { toast } from "sonner";
 import ModalAddGastronomics from "./ModalAddGastronomic";
+import { deleteGastronomicRequest } from "../../services/gastronomics";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -62,7 +63,10 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 export default function GastronomicsTable() {
-  const { gastronomics, error, loading } = useGastronomics();
+  const { gastronomics, error, loading, setGastronomics } = useGastronomics();
+  const [selectedGastronomic, setSelectedGastronomic] =
+    useState<Gastronomics | null>(null);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
@@ -154,6 +158,29 @@ export default function GastronomicsTable() {
     (gastronomic: Gastronomics, columnKey: Key) => {
       const cellValue = gastronomic[columnKey as keyof Gastronomics];
 
+      const handleEditGastronomic = (gastronomic: Gastronomics) => {
+        setSelectedGastronomic(gastronomic);
+        onOpen();
+      };
+
+      const handleDelete = (id: string) => {
+        deleteGastronomicRequest(id)
+          .then(() => {
+            toast.success("Comida eliminada con exito");
+            setGastronomics((prev) => {
+              return prev
+                ? prev.filter((gastronomic) => {
+                    return gastronomic.id !== id;
+                  })
+                : null;
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("Error al eliminar la Comida");
+          });
+      };
+
       switch (columnKey) {
         case "description":
           return (
@@ -196,12 +223,18 @@ export default function GastronomicsTable() {
           return (
             <div className="relative flex justify-center items-center gap-2">
               <Tooltip content="Edit food">
-                <button className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                <button
+                  onClick={() => handleEditGastronomic(gastronomic)}
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                >
                   <EditIcon />
                 </button>
               </Tooltip>
               <Tooltip color="danger" content="Delete food">
-                <button className="text-lg text-danger cursor-pointer active:opacity-50">
+                <button
+                  onClick={() => handleDelete(gastronomic.id)}
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
+                >
                   <DeleteIcon />
                 </button>
               </Tooltip>
@@ -211,7 +244,7 @@ export default function GastronomicsTable() {
           return String(cellValue);
       }
     },
-    []
+    [onOpen, setGastronomics]
   );
 
   const onNextPage = useCallback(() => {
@@ -250,6 +283,10 @@ export default function GastronomicsTable() {
   }, []);
 
   const topContent = useMemo(() => {
+    const handleAddProduct = () => {
+      setSelectedGastronomic(null);
+      onOpen();
+    };
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -288,10 +325,19 @@ export default function GastronomicsTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
+            <Button
+              color="warning"
+              endContent={<PlusIcon />}
+              onPress={handleAddProduct}
+            >
               Nueva Comida
             </Button>
-            <ModalAddGastronomics isOpen={isOpen} onClose={onClose} />
+            <ModalAddGastronomics
+              isOpen={isOpen}
+              onClose={onClose}
+              setGastronomics={setGastronomics}
+              {...selectedGastronomic}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -322,6 +368,8 @@ export default function GastronomicsTable() {
     isOpen,
     onClose,
     onOpen,
+    selectedGastronomic,
+    setGastronomics,
   ]);
 
   const bottomContent = useMemo(() => {

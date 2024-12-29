@@ -38,6 +38,7 @@ import {
 import useDrinks from "../../customHooks/useDrinks";
 import { toast } from "sonner";
 import ModalAddDrinks from "./ModalAddDrinks";
+import { deleteDrinkRequest } from "../../services/drinks";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -57,8 +58,10 @@ const columns = [
 const INITIAL_VISIBLE_COLUMNS = ["price", "name", "actions", "createdAt"];
 
 export default function DrinksTable() {
-  const { drinks, error, loading } = useDrinks();
-  const {isOpen, onOpen, onClose} = useDisclosure();
+  const { drinks, error, loading, setDrinks } = useDrinks();
+  const [selectedDrink, setSelectedDrink] = useState<Drinks | null>(null);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
 
@@ -112,8 +115,8 @@ export default function DrinksTable() {
     let filteredProducts = [...drinks];
 
     if (hasSearchFilter) {
-      filteredProducts = filteredProducts.filter((snack) =>
-        snack.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredProducts = filteredProducts.filter((drink) =>
+        drink.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     return filteredProducts;
@@ -141,14 +144,37 @@ export default function DrinksTable() {
     sortDescriptor?.direction,
   ]);
 
-  const renderCell = useCallback((snack: Drinks, columnKey: Key) => {
-    const cellValue = snack[columnKey as keyof Drinks];
+  const renderCell = useCallback((drink: Drinks, columnKey: Key) => {
+    const cellValue = drink[columnKey as keyof Drinks];
+
+    const handleEditDrink = (drink: Drinks) => {
+      setSelectedDrink(drink);
+      onOpen();
+    };
+
+    const handleDelete = (id: string) => {
+      deleteDrinkRequest(id)
+        .then(() => {
+          toast.success("Bebida eliminada con exito");
+          setDrinks((prev) => {
+            return prev
+              ? prev.filter((drink) => {
+                  return drink.id !== id;
+                })
+              : null;
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Error al eliminar la Bebida");
+        });
+    };
 
     switch (columnKey) {
       case "name":
         return (
           <User
-            avatarProps={{ radius: "lg", src: snack.imagen }}
+            avatarProps={{ radius: "lg", src: drink.imagen }}
             name={
               <span
                 style={{
@@ -159,7 +185,7 @@ export default function DrinksTable() {
                   whiteSpace: "nowrap",
                 }}
               >
-                {snack.name}
+                {drink.name}
               </span>
             }
           />
@@ -168,14 +194,14 @@ export default function DrinksTable() {
       case "price":
         return (
           <div className="flex">
-            <p className="text-bold text-small capitalize">${snack.price}</p>
+            <p className="text-bold text-small capitalize">${drink.price}</p>
           </div>
         );
       case "createdAt": {
         return (
           <div className="flex justify-center">
             <p className={`text-bold text-small capitalize`}>
-              {formatearFecha(snack.createdAt)}
+              {formatearFecha(drink.createdAt)}
             </p>
           </div>
         );
@@ -184,12 +210,12 @@ export default function DrinksTable() {
         return (
           <div className="relative flex justify-center items-center gap-2">
             <Tooltip content="Edit drink">
-              <button className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <button  onClick={()=>(handleEditDrink(drink))} className="text-lg text-default-400 cursor-pointer active:opacity-50">
                 <EditIcon />
               </button>
             </Tooltip>
             <Tooltip color="danger" content="Delete drink">
-              <button className="text-lg text-danger cursor-pointer active:opacity-50">
+              <button onClick={()=>(handleDelete(drink.id))} className="text-lg text-danger cursor-pointer active:opacity-50">
                 <DeleteIcon />
               </button>
             </Tooltip>
@@ -198,7 +224,7 @@ export default function DrinksTable() {
       default:
         return String(cellValue);
     }
-  }, []);
+  }, [onOpen, setDrinks]);
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -236,6 +262,10 @@ export default function DrinksTable() {
   }, []);
 
   const topContent = useMemo(() => {
+    const handleAddProduct = () => {
+      setSelectedDrink(null);
+      onOpen();
+    };
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -274,10 +304,15 @@ export default function DrinksTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
+            <Button color="warning" endContent={<PlusIcon />} onPress={handleAddProduct}>
               Nueva Bebida
             </Button>
-            <ModalAddDrinks isOpen={isOpen} onClose={onClose}/>
+            <ModalAddDrinks
+              isOpen={isOpen}
+              onClose={onClose}
+              setDrinks={setDrinks}
+              {...selectedDrink}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -307,7 +342,9 @@ export default function DrinksTable() {
     onClear,
     onClose,
     onOpen,
-    isOpen
+    isOpen,
+    setDrinks,
+    selectedDrink
   ]);
 
   const bottomContent = useMemo(() => {

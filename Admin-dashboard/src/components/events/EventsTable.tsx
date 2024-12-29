@@ -38,6 +38,7 @@ import {
 import useEvents from "../../customHooks/useEvents";
 import { toast } from "sonner";
 import ModalAddEvents from "./ModalAddEvents";
+import { deleteEventsRequest } from "../../services/events";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -56,7 +57,9 @@ const columns = [
 const INITIAL_VISIBLE_COLUMNS = ["name", "actions", "createdAt"];
 
 export default function EventsTable() {
-  const { events, error, loading } = useEvents();
+  const { events, error, loading, setEvents } = useEvents();
+  const [selectedEvent, setSelectedEvent] = useState<Events | null>(null);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
@@ -140,57 +143,89 @@ export default function EventsTable() {
     sortDescriptor?.direction,
   ]);
 
-  const renderCell = useCallback((event: Events, columnKey: Key) => {
-    const cellValue = event[columnKey as keyof Events];
+  const renderCell = useCallback(
+    (event: Events, columnKey: Key) => {
+      const cellValue = event[columnKey as keyof Events];
 
-    switch (columnKey) {
-      case "name":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: event.imagen }}
-            name={
-              <span
-                style={{
-                  display: "inline-block",
-                  maxWidth: "250px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {event.description}
-              </span>
-            }
-          />
-        );
-      case "createdAt": {
-        return (
-          <div className="flex justify-center">
-            <p className={`text-bold text-small capitalize`}>
-              {formatearFecha(event.createdAt)}
-            </p>
-          </div>
-        );
+      const handleEditEvent = (event: Events) => {
+        setSelectedEvent(event);
+        onOpen();
+      };
+
+      const handleDelete = (id: string) => {
+        deleteEventsRequest(id)
+          .then(() => {
+            toast.success("Imagen eliminada con exito");
+            setEvents((prev) => {
+              return prev
+                ? prev.filter((event) => {
+                    return event.id !== id;
+                  })
+                : null;
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("Error al eliminar la Imagen");
+          });
+      };
+
+      switch (columnKey) {
+        case "name":
+          return (
+            <User
+              avatarProps={{ radius: "lg", src: event.imagen }}
+              name={
+                <span
+                  style={{
+                    display: "inline-block",
+                    maxWidth: "250px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {event.description}
+                </span>
+              }
+            />
+          );
+        case "createdAt": {
+          return (
+            <div className="flex justify-center">
+              <p className={`text-bold text-small capitalize`}>
+                {formatearFecha(event.createdAt)}
+              </p>
+            </div>
+          );
+        }
+        case "actions":
+          return (
+            <div className="relative flex justify-center items-center gap-2">
+              <Tooltip content="Edit Image">
+                <button
+                  onClick={() => handleEditEvent(event)}
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                >
+                  <EditIcon />
+                </button>
+              </Tooltip>
+              <Tooltip color="danger" content="Delete Image">
+                <button
+                  onClick={() => handleDelete(event.id)}
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
+                >
+                  <DeleteIcon />
+                </button>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return String(cellValue);
       }
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Tooltip content="Edit event">
-              <button className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </button>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete event">
-              <button className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </button>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return String(cellValue);
-    }
-  }, []);
+    },
+    [onOpen, setEvents]
+  );
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -228,6 +263,11 @@ export default function EventsTable() {
   }, []);
 
   const topContent = useMemo(() => {
+    const handleAddProduct = () => {
+      setSelectedEvent(null);
+      onOpen();
+    };
+
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -266,10 +306,19 @@ export default function EventsTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
+            <Button
+              color="warning"
+              endContent={<PlusIcon />}
+              onPress={handleAddProduct}
+            >
               Nueva Imagen
             </Button>
-            <ModalAddEvents isOpen={isOpen} onClose={onClose} />
+            <ModalAddEvents
+              isOpen={isOpen}
+              onClose={onClose}
+              setEvents={setEvents}
+              {...selectedEvent}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -300,6 +349,8 @@ export default function EventsTable() {
     isOpen,
     onClose,
     onOpen,
+    selectedEvent,
+    setEvents
   ]);
 
   const bottomContent = useMemo(() => {

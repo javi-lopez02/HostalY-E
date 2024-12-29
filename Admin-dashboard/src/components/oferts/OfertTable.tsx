@@ -37,6 +37,7 @@ import {
 import useOferts from "../../customHooks/useOferts";
 import { toast } from "sonner";
 import ModalAddOferts from "./ModalAddOferts";
+import { deleteOfertRequest } from "../../services/oferts";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -61,7 +62,8 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 export default function OfertsTable() {
-  const { oferts, error, loading } = useOferts();
+  const { oferts, error, loading, setOferts } = useOferts();
+  const [selectedOfert, setSelectedOfert] = useState<Oferts | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [filterValue, setFilterValue] = useState("");
@@ -145,53 +147,87 @@ export default function OfertsTable() {
     sortDescriptor?.direction,
   ]);
 
-  const renderCell = useCallback((ofert: Oferts, columnKey: Key) => {
-    const cellValue = ofert[columnKey as keyof Oferts];
+  const renderCell = useCallback(
+    (ofert: Oferts, columnKey: Key) => {
+      const cellValue = ofert[columnKey as keyof Oferts];
 
-    switch (columnKey) {
-      case "price":
-        return (
-          <div className="flex text-center">
-            <p className={`text-bold text-small capitalize`}>${ofert.price}</p>
-          </div>
-        );
+      const handleEditOferts = (ofert: Oferts) => {
+        setSelectedOfert(ofert);
+        onOpen();
+      };
 
-      case "description":
-        return (
-          <div className="flex">
-            <p className="text-bold text-small capitalize">
-              {ofert.description}
-            </p>
-          </div>
-        );
-      case "createdAt": {
-        return (
-          <div className="flex justify-center">
-            <p className={`text-bold text-small capitalize`}>
-              {formatearFecha(ofert.createdAt)}
-            </p>
-          </div>
-        );
+      const handleDelete = (id: string) => {
+        deleteOfertRequest(id)
+          .then(() => {
+            toast.success("Oferta eliminada con exito");
+            setOferts((prev) => {
+              return prev
+                ? prev.filter((ofert) => {
+                    return ofert.id !== id;
+                  })
+                : null;
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("Error al eliminar la Oferta");
+          });
+      };
+
+      switch (columnKey) {
+        case "price":
+          return (
+            <div className="flex text-center">
+              <p className={`text-bold text-small capitalize`}>
+                ${ofert.price}
+              </p>
+            </div>
+          );
+
+        case "description":
+          return (
+            <div className="flex">
+              <p className="text-bold text-small capitalize">
+                {ofert.description}
+              </p>
+            </div>
+          );
+        case "createdAt": {
+          return (
+            <div className="flex justify-center">
+              <p className={`text-bold text-small capitalize`}>
+                {formatearFecha(ofert.createdAt)}
+              </p>
+            </div>
+          );
+        }
+        case "actions":
+          return (
+            <div className="relative flex justify-center items-center gap-2">
+              <Tooltip content="Edit ofert">
+                <button
+                  onClick={() => handleEditOferts(ofert)}
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                >
+                  <EditIcon />
+                </button>
+              </Tooltip>
+              <Tooltip color="danger" content="Delete ofert">
+                <button
+                  onClick={() => handleDelete(ofert.id)}
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
+                >
+                  <DeleteIcon />
+                </button>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return String(cellValue);
       }
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Tooltip content="Edit ofert">
-              <button className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </button>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete ofert">
-              <button className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </button>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return String(cellValue);
-    }
-  }, []);
+    },
+    [onOpen, setOferts]
+  );
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -229,6 +265,10 @@ export default function OfertsTable() {
   }, []);
 
   const topContent = useMemo(() => {
+    const handleAddProduct = () => {
+      setSelectedOfert(null);
+      onOpen();
+    };
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -267,10 +307,19 @@ export default function OfertsTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="warning" endContent={<PlusIcon />} onPress={onOpen}>
+            <Button
+              color="warning"
+              endContent={<PlusIcon />}
+              onPress={handleAddProduct}
+            >
               Nueva Oferta
             </Button>
-            <ModalAddOferts isOpen={isOpen} onClose={onClose} />
+            <ModalAddOferts
+              isOpen={isOpen}
+              onClose={onClose}
+              setOferts={setOferts}
+              {...selectedOfert}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -301,6 +350,8 @@ export default function OfertsTable() {
     isOpen,
     onClose,
     onOpen,
+    selectedOfert,
+    setOferts,
   ]);
 
   const bottomContent = useMemo(() => {

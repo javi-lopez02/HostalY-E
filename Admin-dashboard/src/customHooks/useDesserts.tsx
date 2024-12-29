@@ -3,7 +3,7 @@ import { Desserts } from "../type";
 import { getDessertsRequest } from "../services/desserts";
 
 function useDesserts() {
-  const [desserts, setDesserts] = useState<Desserts[]>([]);
+  const [desserts, setDesserts] = useState<Desserts[] | null>([]);
   const [error, setError] = useState<Array<string> | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +23,7 @@ function useDesserts() {
       });
   }, []);
 
-  return { desserts, error, loading };
+  return { desserts, error, loading, setDesserts };
 }
 
 export default useDesserts;

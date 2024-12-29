@@ -3,7 +3,7 @@ import { Snacks } from "../type";
 import { getSnacksRequest } from "../services/snacks";
 
 function useSnacks() {
-  const [snacks, setSnacks] = useState<Snacks[]>([]);
+  const [snacks, setSnacks] = useState<Snacks[] | null>([]);
   const [error, setError] = useState<Array<string> | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +23,7 @@ function useSnacks() {
       });
   }, []);
 
-  return { snacks, error, loading };
+  return { snacks, error, loading, setSnacks };
 }
 
 export default useSnacks;
