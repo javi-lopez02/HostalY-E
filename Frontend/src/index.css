@@ -2,21 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.listProduct{
-  display: grid;
-  min-height: 100vh;
-  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
-  gap: 16px;
-}
-
-.text_color{
-  text-shadow: 2px 2px 2px #000000;
-}
-
-.hide-scrollbar {
-  scrollbar-width: none; /* Firefox */
-}
-
-.hide-scrollbar::-webkit-scrollbar {
+body::-webkit-scrollbar {
   display: none; /* Chrome, Safari y Opera */
+}
+
+.shadowimg {
+  filter: drop-shadow(10px 10px 10px #0d5b61a6);
 }

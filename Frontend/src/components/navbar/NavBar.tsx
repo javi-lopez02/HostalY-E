@@ -9,7 +9,7 @@ import { GrGallery } from "react-icons/gr";
 import { IoFastFoodSharp } from "react-icons/io5";
 import { useAuth } from "../../context/auth.context";
 import { useDisclosure } from "@nextui-org/react";
-import { MdLogout } from "react-icons/md";
+import { MdContacts, MdLogout } from "react-icons/md";
 import AuthUser from "../../pages/auth/AuthUser";
 import DrawerSideBar from "./DrawerSideBar";
 
@@ -35,7 +35,7 @@ const Navbar = () => {
 
         <div className="hidden xl:flex justify-end items-center space-x-1 w-6/12">
           <div className="hidden lg:flex font-semibold text-lg pr-6">
-            <ul className="flex items-center space-x-4">
+            <ul className="flex items-center space-x-2">
               <Link to="/">
                 <li className="p-1 flex items-center gap-1 hover:text-blue-500 duration-200 cursor-pointer">
                   <FaHome />
@@ -82,6 +82,12 @@ const Navbar = () => {
                 <li className="p-1 flex items-center gap-1 hover:text-blue-500 duration-200 cursor-pointer">
                   <GrGallery />
                   Events
+                </li>
+              </Link>
+              <Link to="/contact">
+                <li className="p-1 flex items-center gap-1 hover:text-blue-500 duration-200 cursor-pointer">
+                  <MdContacts />
+                  ContactUs
                 </li>
               </Link>
             </ul>

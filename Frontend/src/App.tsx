@@ -15,6 +15,7 @@ import Drinks from "./pages/Drinks";
 import Snacks from "./pages/Snacks";
 import Gallery from "./pages/Gallery";
 import Events from "./pages/Events";
+import ContactUs from "./pages/ContactUs";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
               <Route path="/snacks" element={<Snacks />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/events" element={<Events />} />
+              <Route path="/contact" element={<ContactUs />} />
 
               <Route element={<ProtectedRoutes />}></Route>
             </Route>

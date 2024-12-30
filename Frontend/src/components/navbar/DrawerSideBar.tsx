@@ -11,6 +11,7 @@ import { FaBowlFood } from "react-icons/fa6";
 import { GiTicket } from "react-icons/gi";
 import { GrGallery } from "react-icons/gr";
 import { IoFastFoodSharp } from "react-icons/io5";
+import { MdContacts } from "react-icons/md";
 import { PiBowlFoodFill } from "react-icons/pi";
 import { RiGalleryFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
@@ -159,6 +160,17 @@ export default function DrawerSideBar() {
                         </span>
                         <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-primary-800 bg-primary-100 rounded-full ">
                           15
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/contact"}
+                        className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                      >
+                        <MdContacts />
+                        <span className="flex-1 ms-3 whitespace-nowrap">
+                          ContactUs
                         </span>
                       </Link>
                     </li>
