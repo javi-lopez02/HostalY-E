@@ -5,7 +5,7 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/auth.context";
 import { MdLogout } from "react-icons/md";
 import ModalEditUser from "../ModalEditUser";
 
@@ -23,14 +23,14 @@ const Avatar = () => {
           aria-expanded="false"
           data-dropdown-toggle="dropdown"
         >
-          {user && (
+          {user?.image && (
             <img
               className="w-5 h-5 rounded-full"
               src={user.image}
               alt="user photo"
             />
           )}
-          {!user && (
+          {!user?.image && (
             <svg
               className="w-6 h-6"
               aria-hidden="true"
@@ -78,7 +78,7 @@ const Avatar = () => {
           <ModalEditUser
             isOpen={isOpen}
             onClose={onClose}
-            id={user?.id}
+            id={user?.userId}
             username={user?.username}
             image={user?.image}
           />

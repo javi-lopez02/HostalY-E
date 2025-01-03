@@ -1,8 +1,9 @@
 export type User = {
   username?: string;
-  userId?: number;
+  userId?: string;
   password?: string;
   status?: boolean;
+  image?: string
 };
 
 export type AuthContextType = {

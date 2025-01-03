@@ -4,9 +4,10 @@ export interface UserLogin {
 }
 
 export interface User {
-  usermane: string;
+  username: string;
   id: string;
   role: "USER" | "ADMIN";
+  image?: string
 }
 
 export interface AuthContextType {

@@ -8,7 +8,7 @@ interface UserRequest {
   username: string;
   password: string;
   image: string;
-  role: "USER" | "ADMIN";
+  role?: "USER" | "ADMIN";
 }
 
 export const createUsersRequest = (user: UserRequest) => {

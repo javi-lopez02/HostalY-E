@@ -44,8 +44,8 @@ export const loginAdmin = async (req: Request, res: Response) => {
     });
     res.json({
       username: user.username,
-      userRole: user.role,
-      userId: user.id,
+      role: user.role,
+      id: user.id,
     });
   } catch (error) {
     console.log(error);

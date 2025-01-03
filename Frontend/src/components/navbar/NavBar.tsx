@@ -9,12 +9,13 @@ import { GrGallery } from "react-icons/gr";
 import { IoFastFoodSharp } from "react-icons/io5";
 import { useAuth } from "../../context/auth.context";
 import { useDisclosure } from "@nextui-org/react";
-import { MdContacts, MdLogout } from "react-icons/md";
+import { MdContacts } from "react-icons/md";
 import AuthUser from "../../pages/auth/AuthUser";
 import DrawerSideBar from "./DrawerSideBar";
+import Avatar from "./Avatar";
 
 const Navbar = () => {
-  const { logout, isAuth } = useAuth();
+  const { isAuth } = useAuth();
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -97,12 +98,8 @@ const Navbar = () => {
             <div className="hidden xl:flex font-semibold text-lg">
               <div className="hidden xl:flex lg:items-center font-semibold text-lg">
                 {isAuth && (
-                  <div
-                    onClick={logout}
-                    className="sm:p-3 flex items-center border-red-500 border-opacity-0 hover:border-opacity-100 hover:text-red-500 duration-200 cursor-pointer"
-                  >
-                    <MdLogout className="min-h-6 min-w-6" />
-                    LogOut
+                  <div className="p-1 flex items-center gap-1 hover:text-blue-500 duration-200 cursor-pointer mr-2">
+                    <Avatar />
                   </div>
                 )}
                 {!isAuth && (
