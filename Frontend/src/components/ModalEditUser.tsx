@@ -34,7 +34,7 @@ const ModalEditUser: FC<Props> = ({ id, username, image, isOpen, onClose }) => {
     setLoading(true);
     const data = Object.fromEntries(new FormData(event.currentTarget));
 
-    const inputImage = data["image"] as string;
+    const inputImage = data["image"] as string || image;
 
     const inputUser = data["user"] as string;
     const inputPassword = data["password"] as string;

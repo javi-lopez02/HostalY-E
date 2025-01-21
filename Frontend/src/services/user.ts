@@ -4,7 +4,7 @@ interface UserRequest {
   userId: string
   username: string;
   password: string;
-  image: string;
+  image?: string;
   role?: "USER" | "ADMIN";
 }
 

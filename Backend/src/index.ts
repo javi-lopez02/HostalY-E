@@ -13,6 +13,7 @@ import gallery from "./Routes/gallery,routes";
 import snacks from "./Routes/snacks.routes";
 import drinks from "./Routes/drinks.routes";
 import users from "./Routes/user.routes"
+import order from "./Routes/order.routes";
 
 dotenv.config();
 
@@ -34,7 +35,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 app.use("/api/auth", login);
-app.use("/api", oferts, gastronomic, gallery, snacks, events, desserts, drinks, users);
+app.use("/api", oferts, gastronomic, gallery, snacks, events, desserts, drinks, users, order);
 
 app.use("/public", express.static(path.join(__dirname, "/upload")));
 
