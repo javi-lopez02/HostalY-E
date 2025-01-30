@@ -1,5 +1,6 @@
 import {
   Button,
+  DateValue,
   Form,
   Modal,
   ModalBody,
@@ -15,14 +16,19 @@ import {
 } from "@nextui-org/react";
 import React, { FC, useMemo, useState } from "react";
 import { OrderItem } from "../../types";
+import { useAuth } from "../../context/auth.context";
+import { MESSAGE_URL } from "../../conf";
+import { updateOrderRequest } from "../../services/order";
+import { toast } from "sonner";
 
 interface Props {
+  id: string;
   count: number;
   totalAmount: number;
   isOpen: boolean;
   onClose: () => void;
   name?: string;
-  email?: string;
+  date?: DateValue | null;
   phone?: string;
   order: OrderItem[] | null;
 }
@@ -35,21 +41,35 @@ const columns = [
 ];
 
 const ModalMessage: FC<Props> = ({
+  id,
   count,
   totalAmount,
   isOpen,
   onClose,
   name,
-  email,
+  date,
   phone,
   order,
 }) => {
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
   const handleSubmit = async () => {
     setLoading(true);
+    updateOrderRequest(id)
+      .then(() => {
+        setLoading(false);
+        onClose()
+        toast.success("Se completo el pedido correctamente");
 
-    //Validaciones
+        const message = `Nombre: ${name},\n Fecha: ${date?.day}/${date?.month}/${date?.year},\n Teléfono: ${phone},\n Usuario: ${user?.username}, \n Pedido añadido al panel de administración`;
+
+        const url = MESSAGE_URL + `${ message }`;
+        window.open(url, "_blank");
+      })
+      .catch(() => {
+        toast.error("Hubo un error al completar el pedido");
+      })
   };
 
   const itemsFilter = useMemo((): OrderItem[] => {
@@ -67,11 +87,25 @@ const ModalMessage: FC<Props> = ({
       switch (columnKey) {
         case "image":
           if (order.ofert) {
-            return <img className="w-8 h-8 rounded-full" src="/Logo.png" alt="" />;
+            return (
+              <img className="w-8 h-8 rounded-full" src="/Logo.png" alt="" />
+            );
           } else if (order.dessert) {
-            return <img className="w-8 h-8 rounded-full" src={order.dessert.imagen} alt="" />;
+            return (
+              <img
+                className="w-8 h-8 rounded-full"
+                src={order.dessert.imagen}
+                alt=""
+              />
+            );
           } else {
-            return <img className="w-8 h-8 rounded-full" src={order.gastronomic.imagen} alt="" />;
+            return (
+              <img
+                className="w-8 h-8 rounded-full"
+                src={order.gastronomic.imagen}
+                alt=""
+              />
+            );
           }
         case "description":
           if (order.ofert) {
@@ -133,8 +167,8 @@ const ModalMessage: FC<Props> = ({
                         <h1 className="font-semibold">{name}</h1>
                       </li>
                       <li className="flex space-x-2 px-2">
-                        <strong className="text-neutral-700/80">Email: </strong>
-                        <h1 className="font-semibold">{email}</h1>
+                        <strong className="text-neutral-700/80">Fecha: </strong>
+                        <h1 className="font-semibold">{`${date?.day}/${date?.month}/${date?.year}`}</h1>
                       </li>
                       <li className="flex space-x-2 px-2">
                         <strong className="text-neutral-700/80">Phone: </strong>
@@ -182,7 +216,11 @@ const ModalMessage: FC<Props> = ({
                       <Button color="danger" variant="light" onPress={onClose}>
                         Cancelar
                       </Button>
-                      <Button color="primary" type="submit">
+                      <Button
+                        onPress={handleSubmit}
+                        color="primary"
+                        type="submit"
+                      >
                         {loading && <Spinner color="default" />}
                         {!loading && "Confirmar"}
                       </Button>

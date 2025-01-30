@@ -24,6 +24,10 @@ export const updateDessertItemRequest = (id: string, quantity: number, price: nu
   return axios.put(`dessert/order?p=${id}`, {quantity, price});
 };
 
+export const updateOrderRequest = (id: string) => {
+  return axios.put(`/order?p=${id}`)
+}
+
 export const deleteOrderItemRequest = (id: string) => {
   return axios.delete(`products/order?p=${id}`);
 };

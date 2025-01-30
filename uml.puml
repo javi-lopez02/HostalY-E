@@ -1,0 +1,794 @@
+@startuml
+
+' Define namespaces for clarity
+package "Backend" {
+    package "Model" {
+        package "src/Data"{
+            object addOferts{
+                const ofertsData: JSON
+                const gastronomicsData: JSON
+                const dessertsData: JSON
+            }
+            object addDrinks {
+                const drinksData: JSON
+                const snacksData: JSON
+            }
+            object addImages{
+                const eventsData: JSON
+                const galleryData: JSON
+            }
+        }
+        package "prisma"{
+            object migration
+        }
+    }
+    package "Controllers" {
+        package "src/Controllers" {
+            object authController{
+                const register(req, res): JSON
+                const login(req, res): JSON
+                const verifyToken(req, res): JSON
+                const logout(req, res): JSON
+            }
+            object authAdminController{
+                const loginAdmin(req, res): JSON
+                const verifyTokenAdmin(req, res): JSON
+            }
+            object dessertsController{
+                const createDessert(req, res): JSON
+                const editDessert(req, res): JSON
+                const getDesserts(req, res): JSON
+                const deleteDessert(req, res): JSON
+            }
+            object drinksController{
+                const createDrink(req, res): JSON
+                const editDrink(req, res): JSON
+                const getDrinks(req, res): JSON
+                const deleteDrink(req, res): JSON
+            }
+            object eventsController{
+                const createEvent(req, res): JSON
+                const editEvent(req, res): JSON
+                const getEvents(req, res): JSON
+                const deleteEvent(req, res): JSON
+            }
+            object galleryController{
+                const createGallery(req, res): JSON
+                const editGallery(req, res): JSON
+                const getGallery(req, res): JSON
+                const deleteGallery(req, res): JSON
+            }
+            object gastronomicsController{
+                const createGastronomic(req, res): JSON
+                const editGastronomic(req, res): JSON
+                const getGastronomics(req, res): JSON
+                const deleteGastronomic(req, res): JSON
+            }
+            object ofertsController{
+                const createOfert(req, res): JSON
+                const editOfert(req, res): JSON
+                const getOferts(req, res): JSON
+                const deleteOfert(req, res): JSON
+            }
+            object orderController{
+                const addOfertItem(req, res): JSON
+                const addGastronomicItem(req, res): JSON
+                const addDessertItem(req, res): JSON
+                const getOrderItems(req, res): JSON
+                const getOrder(req, res): JSON
+                const getOrderItemsAdmin(req, res): JSON
+                const updateGastronomicItem(req, res): JSON
+                const updateDessertItem(req, res): JSON
+                const updateOrder(req, res): JSON
+                const deleteOrderItem(req, res): JSON
+            }
+            object snacksController{
+                const createSnack(req, res): JSON
+                const editSnack(req, res): JSON
+                const getSnacks(req, res): JSON
+                const deleteSnack(req, res): JSON
+            }
+            object userController{
+                const createUser(req, res): JSON
+                const editUser(req, res): JSON
+                const getUsers(req, res): JSON
+                const deleteUser(req, res): JSON
+                const getUserId(req, res): JSON
+                const editUserAdmin(req, res): JSON
+            }
+        }
+
+
+
+        package "src/Routes" {
+            object authRoutes {
+                get
+                post
+            }
+            object dessertsRoutes {
+                get
+                post
+                put
+                delete
+            }
+            object drinksRoutes {
+                get
+                post
+                put
+                delete
+            }
+            object eventsRoutes {
+                get
+                post
+                put
+                delete
+            }
+            object galleryRoutes {
+                get
+                post
+                put
+                delete
+            }
+            object gastronomicsRoutes {
+                get
+                post
+                put
+                delete
+            }
+            object ofertsRoutes {
+                get
+                post
+                put
+                delete
+            }
+            object orderRoutes {
+                get
+                post
+                put
+                delete
+            }
+            object snacksRoutes {
+                get
+                post
+                put
+                delete
+            }
+            object userRoutes {
+                get
+                post
+                put
+                delete
+            }
+        }
+    }
+}
+
+' Backend relations
+userController -- userRoutes
+authController -- authRoutes
+authAdminController -- authRoutes
+ofertsController -- ofertsRoutes
+dessertsController -- dessertsRoutes
+gastronomicsController -- gastronomicsRoutes
+snacksController -- snacksRoutes
+drinksController -- drinksRoutes
+eventsController -- eventsRoutes
+galleryController -- galleryRoutes
+orderController -- orderRoutes
+
+migration -- addDrinks
+migration -- addImages
+migration -- addOferts
+migration -- userController
+migration -- authController
+migration -- authAdminController
+migration -- ofertsController
+migration -- dessertsController
+migration -- gastronomicsController
+migration -- snacksController
+migration -- drinksController
+migration -- eventsController
+migration -- galleryController
+migration -- orderController
+
+
+package "Frontend" {
+    package "FrontendView" {
+        package "Components" {
+            package "Car" {
+                object Card {
+                    const Card(props) : component
+                }
+                object CardOfert {
+                    const CardOfert(props) : component
+                }
+                object ModalDelete {
+                    const ModalDelete(props) : component
+                }
+                object ModalMessage {
+                    const ModalMessage(props) : component
+                }
+            }
+            package "NavBar" {
+                object Avatar {
+                    const Avatar(props) : component
+                }
+                object DrawerSideBar {
+                    const DrawerSideBar(props) : component
+                }
+                object Nav {
+                    const Nav(props) : component
+                }
+            }
+            package "Dessert" {
+                object DessertsCard {
+                    const DessertsCard(props) : component
+                }
+            }
+            package "Drink" {
+                object DrinksCard {
+                    const DrinksCard(props) : component
+                }
+            }
+            package "Event" {
+                object EventsCard {
+                    const EventCard(props) : component
+                }
+            }
+            package "Gallery" {
+                object GalleryCard {
+                    const GalleryCard(props) : component
+                }
+            }
+            package "Gastronomic" {
+                object GastronomicsCard {
+                    const GastronomicCard(props) : component
+                }
+            }
+            package "Ofert" {
+                object OfertsCard {
+                    const OfertCard(props) : component
+                }
+            }
+            package "Snack" {
+                object SnacksCard {
+                    const SnackCard(props) : component
+                }
+            }
+            object Autorizer {
+                const Autorizer(props) : component
+            }
+            object ImagePreview {
+                const ImagePreview(props) : component
+            }
+            object ModalEditUser {
+                const ModalEditUser(props) : component
+            }
+            object ProtectedRoutes {
+                const ProtectedRoutes(props) : component
+            }
+        }
+
+        package "Pages" {
+            package "auth"{
+                object AuthUser {
+                    const AuthUser(props) : component
+                }
+                object ModalLogin {
+                    const ModalLogin(props) : component
+                }
+                object ModalRegister{
+                    const ModalRegister(props) : component
+                }
+            }
+            object 404Page {
+                const 404Page(props) : component
+            }
+            object CarShop {
+                const CarShop(props) : component
+            }
+            object ContactUs {
+                const ContactUs(props) : component
+            }
+            object Desserts {
+                const Dessert(props) : component
+            }
+            object Drinks {
+                const Drinks(props) : component
+            }
+            object Events {
+                const Events(props) : component
+            }
+            object Gallerys {
+                const Gallerys(props) : component
+            }
+            object Gastronomics {
+                const Gastronomics(props) : component
+            }
+            object Home {
+                const Home(props) : component
+            }
+            object Oferts {
+                const Oferts(props) : component
+            }
+            object Snacks {
+                const Snacks(props) : component
+            }
+        }
+    }
+
+    package "FrontendModel" {
+        package "Services" {
+            object authservice {
+                const registerRequest(): post
+                const loginRequest(): post
+                const logoutRequest(): post
+                const verifyTokenRequest(): get
+            }
+            object axios {
+                const instance(): axios
+            }
+            object dessertservice {
+                const getDessertsRequest(): get
+            }
+            object drinkservice {
+                const getDrinksRequest(): get
+            }
+            object eventsservice {
+                const getEventsRequest(): get
+            }
+            object galleryservice {
+                const getGalleryRequest(): get
+            }
+            object gastronomicservice {
+                const getGastronomicsRequest(): get
+            }
+            object ofertservice {
+                const getOfertsRequest(): get
+            }
+            object orderservice {
+                const addOfertItemRequest(): post
+                const addGastronomicItemRequest(): post
+                const addDessertItemRequest(): post
+                const getOrderRequest(): get
+                const updateGastronomicItemRequest(): put
+                const updateDessertItemRequest(): put
+                const updateOrderRequest(): put
+                const deleteOrderItemRequest(): put
+            }
+            object snacksservice {
+                const getSnacksRequest(): get
+            }
+            object userservice {
+                const editUserRequest(): put
+            }
+        }
+
+        package "Context" {
+            object AuthContext
+        }
+
+        package "CustomHooks" {
+            object useDesserts
+            object useDrinks
+            object useEvents
+            object useGallery
+            object useGastronomics
+            object useOferts
+            object useSnacks
+        }
+    }
+}
+
+' Frontend Relations
+Nav -- DrawerSideBar
+Nav -- Avatar
+Nav -- AuthUser
+Nav -- CarShop
+Nav -- Desserts
+Nav -- Drinks
+Nav -- Home
+Nav -- Gastronomics
+Nav -- ContactUs
+Nav -- Gallerys
+Nav -- Snacks
+Nav -- Oferts
+Nav -- Events
+Avatar -- ModalEditUser
+ModalEditUser -- userservice
+AuthUser -- ModalLogin
+AuthUser -- ModalRegister
+AuthUser -- Autorizer
+Autorizer -- ProtectedRoutes
+CarShop -- ModalMessage
+CarShop -- ModalDelete
+CarShop -- Card
+CarShop -- CardOfert
+CarShop -- orderservice
+Desserts -- DessertsCard
+Desserts -- useDesserts
+Desserts -- orderservice
+Drinks -- DrinksCard
+Drinks -- useDrinks
+Events -- EventsCard
+Events -- useEvents
+Gallerys -- GalleryCard
+Gallerys -- useGallery
+Gastronomics -- GastronomicsCard
+Gastronomics -- useGastronomics
+Gastronomics -- orderservice
+Oferts -- OfertsCard
+Oferts -- useOferts
+Oferts -- ofertservice
+Snacks -- SnacksCard
+Snacks -- useSnacks
+ImagePreview -- Events
+ImagePreview -- Gallerys
+useSnacks -- snacksservice
+useDesserts -- dessertservice
+useDrinks -- drinkservice
+useEvents -- eventsservice
+useGallery -- galleryservice
+useGastronomics -- gastronomicservice
+useOferts -- ofertservice
+snacksservice -- axios
+dessertservice -- axios
+drinkservice -- axios
+eventsservice -- axios
+galleryservice -- axios
+gastronomicservice -- axios
+ofertservice -- axios
+AuthContext -- authservice
+
+' Frontend Backend Relations
+snacksservice -- snacksRoutes
+dessertservice -- dessertsRoutes
+drinkservice -- drinksRoutes
+eventsservice -- eventsRoutes
+galleryservice -- galleryRoutes
+gastronomicservice -- gastronomicsRoutes
+ofertservice -- ofertsRoutes
+authservice -- authRoutes
+orderservice -- orderRoutes
+
+
+package "AdminDashboard" {
+    package "AdminView" {
+        package "AdminComponents" {
+            package "AdminNavBar" {
+                object AdminAvatar {
+                    const Avatar(props) : component
+                }
+                object AdminDrawerSideBar {
+                    const DrawerSideBar(props) : component
+                }
+                object AdminNav {
+                    const NavBar(props) : component
+                }
+                object DropDownMenu {
+                    const DropDownMenu(props): component
+                }
+            }
+            package "AdminDessert" {
+                object DessertsTable {
+                    const DessertsTable(props) : component
+                }
+                object ModalAddDessert {
+                    const ModalAddDessert(props) : component
+                }
+            }
+            package "AdminDrink" {
+                object DrinksTable {
+                    const DrinksTable(props) : component
+                }
+                object ModalAddDrinks {
+                    const ModalAddDrinks(props) : component
+                }
+            }
+            package "AdminEvent" {
+                object EventsTable {
+                    const EventsTable(props) : component
+                }
+                object ModalAddEvent {
+                    const ModalAddEvent(props) : component
+                }
+            }
+            package "AdminGallery" {
+                object GalleryTable {
+                    const GalleryTable(props) : component
+                }
+                object ModalAddGallery {
+                    const ModalAddGallery(props) : component
+                }
+            }
+            package "AdminGastronomic" {
+                object GastronomicsTable {
+                    const GastronomicsTable(props) : component
+                }
+                object ModalAddGastronomic {
+                    const ModalAddGastronomic(props) : component
+                }
+            }
+            package "AdminOfert" {
+                object OfertsTable {
+                    const OfertsTable(props) : component
+                }
+                object ModalAddOfert {
+                    const ModalAddOfert(props) : component
+                }
+            }
+            package "AdminSnack" {
+                object SnacksTable {
+                    const SnacksTable(props) : component
+                }
+                object ModalAddSnack {
+                    const ModalAddSnack(props) : component
+                }
+            }
+            package "AdminOrder" {
+                object TableOrders {
+                    const TableOrders(props) : component
+                }
+                object ModalProductsView {
+                    const ModalProductsView(props) : component
+                }
+            }
+            package "AdminUser" {
+                object UsersTable {
+                    const UsersTable(props) : component
+                }
+                object ModalAddUser {
+                    const ModalAddUser(props) : component
+                }
+            }
+            object Icons {
+                const EyeIcon(props) : component
+                const DeleteIcon(props) : component
+                const EditIcon(props) : component
+                const PlusIcon(props) : component
+                const VerticalDotsIcon(props) : component
+                const SearchIcon(props) : component
+                const ChevronDownIcon(props) : component
+            }
+            object AdminModalEditUser {
+                const ModalEditUser(props) : component
+            }
+            object AdminProtectedRoutes {
+                const ProtectedRoutes(props) : component
+            }
+        }
+
+        package "AdminPages" {
+            object AdminDesserts {
+                const Dessert(props) : component
+            }
+            object AdminDrinks {
+                const Drinks(props) : component
+            }
+            object AdminEvents {
+                const Events(props) : component
+            }
+            object AdminGallery {
+                const Gallery(props) : component
+            }
+            object AdminGastronomics {
+                const Gastronomics(props) : component
+            }
+            object AdminHome {
+                const Home(props) : component
+            }
+            object AdminLogin {
+                const Login() : component
+            }
+            object AdminOferts {
+                const Oferts(props) : component
+            }
+            object AdminSnacks {
+                const Snacks(props) : component
+            }
+            object AdminOrder {
+                const Order(props) : component
+            }
+            object AdminUser {
+                const User(props) : component
+            }
+        }
+    }
+
+    package "AdminModel" {
+        package "AdminServices" {
+            object authserviceadmin {
+                const loginRequest(): post
+                const logoutRequest(): post
+                const verifyTokenRequest(): get
+            }
+            object axiosadmin {
+                const instance(): axios
+            }
+            object dessertserviceadmin {
+                const getDessertsRequest(): get
+                const createDessertRequest(): post
+                const editDessertRequest(): put
+                const deleteDessertRequest(): delete
+            }
+            object drinkserviceadmin {
+                const getDrinksRequest(): get
+                const createDrinkRequest(): post
+                const editDrinkRequest(): put
+                const deleteDrinkRequest(): delete
+            }
+            object eventsserviceadmin {
+                const getEventsRequest(): get
+                const createEventRequest(): post
+                const editEventRequest(): put
+                const deleteEventRequest(): delete
+            }
+            object galleryserviceadmin {
+                const getGalleryRequest(): get
+                const createGalleryRequest(): post
+                const editGalleryRequest(): put
+                const deleteGalleryRequest(): delete
+            }
+            object gastronomicserviceadmin {
+                const getGastronomicsRequest(): get
+                const createGastronomicRequest(): post
+                const editGastronomicRequest(): put
+                const deleteGastronomicRequest(): delete
+            }
+            object ofertserviceadmin {
+                const getOfertsRequest(): get
+                const createOfertRequest(): post
+                const editOfertRequest(): put
+                const deleteOfertRequest(): delete
+            }
+            object orderserviceadmin {
+                const getOrderItemRequest(): get
+                const getOrderRequest(): get
+            }
+            object snacksserviceadmin {
+                const getSnacksRequest(): get
+                const createSnackRequest(): post
+                const editSnackRequest(): put
+                const deleteSnackRequest(): delete
+            }
+            object userserviceadmin {
+                const getUsersRequest(): get
+                const editUserRequest(): put
+                const createUserRequest(): post
+                const deleteUserRequest(): delete
+            }
+        }
+
+        package "AdminContext" {
+            object AdminAuthContext {
+                const AuthContext(): Context
+                const useAuth(): function
+                const AuthProvider(): Provider
+            }
+        }
+
+        package "AdminCustomHooks" {
+            object useDessertsAdmin {
+                const useDesserts(props): function
+            }
+            object useDrinksAdmin {
+                const useDrinks(props): function
+            }
+            object useEventsAdmin {
+                const useEvents(props): function
+            }
+            object useGalleryAdmin {
+                const useGallery(props): function
+            }
+            object useGastronomicsAdmin {
+                const useGastronomics(props): function
+            }
+            object useOfertsAdmin {
+                const useOferts(props): function
+            }
+            object useOrderAdmin {
+                const useOrder(props): function
+            }
+            object useSnacksAdmin {
+                const useSnacks(props): function
+            }
+            object useUserAdmin {
+                const useUser(props): function
+            }
+        }
+    }
+}
+
+AdminProtectedRoutes -- Login
+AdminLogin -- authserviceadmin
+
+AdminAvatar -- AdminModalEditUser
+AdminAvatar -- AdminNav 
+DropDownMenu -- AdminNav
+AdminDrawerSideBar -- AdminNav
+
+AdminAuthContext -- authserviceadmin
+useDessertsAdmin -- dessertserviceadmin
+useDrinksAdmin -- drinkserviceadmin
+useEventsAdmin -- eventsserviceadmin
+useGalleryAdmin -- galleryserviceadmin
+useGastronomicsAdmin -- gastronomicserviceadmin
+useOfertsAdmin -- ofertserviceadmin
+useOrderAdmin -- orderserviceadmin
+useSnacksAdmin -- snacksserviceadmin
+useUserAdmin -- userserviceadmin
+
+authserviceadmin -- axiosadmin
+dessertserviceadmin -- axiosadmin
+drinkserviceadmin -- axiosadmin
+eventsserviceadmin -- axiosadmin
+galleryserviceadmin -- axiosadmin
+gastronomicserviceadmin -- axiosadmin
+ofertserviceadmin -- axiosadmin
+orderserviceadmin -- axiosadmin
+snacksserviceadmin -- axiosadmin
+userserviceadmin -- axiosadmin
+
+useDessertsAdmin -- DessertsTable
+useDrinksAdmin -- DrinksTable
+useEventsAdmin -- EventsTable
+useGalleryAdmin -- GalleryTable
+useGastronomicsAdmin -- GastronomicsTable
+useOfertsAdmin -- OfertsTable
+useOrderAdmin -- TableOrders
+useSnacksAdmin -- SnacksTable
+useUserAdmin -- UsersTable
+
+DessertsTable -- ModalAddDessert
+DrinksTable -- ModalAddDrinks
+EventsTable -- ModalAddEvent
+GalleryTable -- ModalAddGallery
+GastronomicsTable -- ModalAddGastronomic
+OfertsTable -- ModalAddOfert
+SnacksTable -- ModalAddSnack
+TableOrders -- ModalProductsView
+UsersTable -- ModalAddUser
+
+DessertsTable -- Icons
+DrinksTable -- Icons
+EventsTable -- Icons
+GalleryTable -- Icons
+GastronomicsTable -- Icons
+OfertsTable -- Icons
+TableOrders -- Icons
+SnacksTable -- Icons
+UsersTable -- Icons
+
+DessertsTable -- AdminDesserts
+DrinksTable -- AdminDrinks
+EventsTable -- AdminEvents
+GalleryTable -- AdminGallery
+GastronomicsTable -- AdminGastronomics
+OfertsTable -- AdminOferts
+TableOrders -- AdminOrder
+SnacksTable -- AdminSnacks
+UsersTable -- AdminUser
+
+AdminDesserts -- DrawerSideBar
+AdminDrinks -- DrawerSideBar
+AdminEvents -- DrawerSideBar
+AdminGallery -- DrawerSideBar
+AdminGastronomics -- DrawerSideBar
+AdminOferts -- DrawerSideBar
+AdminOrder -- DrawerSideBar
+AdminSnacks -- DrawerSideBar
+AdminUser -- DrawerSideBar
+
+' Admin Backend Relations
+snacksserviceadmin -- snacksRoutes
+dessertserviceadmin -- dessertsRoutes
+drinkserviceadmin -- drinksRoutes
+eventsserviceadmin -- eventsRoutes
+galleryserviceadmin -- galleryRoutes
+gastronomicserviceadmin -- gastronomicsRoutes
+ofertserviceadmin -- ofertsRoutes
+authserviceadmin -- authRoutes
+orderserviceadmin -- orderRoutes
+userserviceadmin -- userRoutes
+
+@enduml

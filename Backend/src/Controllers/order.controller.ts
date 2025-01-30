@@ -27,7 +27,7 @@ export const addOfertItem = async (req: Request, res: Response) => {
     let orderFind = await prisma.order.findFirst({
       where: {
         userId: userId,
-        // pending: true,
+        pending: true,
       },
       include: {
         orderItems: true,
@@ -46,7 +46,7 @@ export const addOfertItem = async (req: Request, res: Response) => {
       orderFind = await prisma.order.create({
         data: {
           userId: userId,
-          // pending: true,
+          pending: true,
 
           totalAmount: 0,
         },
@@ -103,7 +103,7 @@ export const addGastronomicItem = async (req: Request, res: Response) => {
     let orderFind = await prisma.order.findFirst({
       where: {
         userId: userId,
-        // pending: true,
+        pending: true,
       },
       include: {
         orderItems: true,
@@ -122,7 +122,7 @@ export const addGastronomicItem = async (req: Request, res: Response) => {
       orderFind = await prisma.order.create({
         data: {
           userId: userId,
-          // pending: true,
+          pending: true,
 
           totalAmount: 0,
         },
@@ -179,7 +179,7 @@ export const addDessertItem = async (req: Request, res: Response) => {
     let orderFind = await prisma.order.findFirst({
       where: {
         userId: userId,
-        // pending: true,
+        pending: true,
       },
       include: {
         orderItems: true,
@@ -198,7 +198,7 @@ export const addDessertItem = async (req: Request, res: Response) => {
       orderFind = await prisma.order.create({
         data: {
           userId: userId,
-          // pending: true,
+          pending: true,
 
           totalAmount: 0,
         },
@@ -235,10 +235,10 @@ export const getOrderItems = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;
 
-    const items = await prisma.order.findMany({
+    const items = await prisma.order.findFirst({
       where: {
         userId: userId,
-        // pending: true,
+        pending: true,
       },
       select: {
         _count: true,
@@ -259,8 +259,9 @@ export const getOrderItems = async (req: Request, res: Response) => {
         },
       },
     });
+
     res.status(200).json({
-      data: items[0],
+      data: items,
     });
   } catch (error) {
     console.error(error);
@@ -332,6 +333,29 @@ export const updateDessertItem = async (req: Request, res: Response) => {
   }
 };
 
+export const updateOrder = async (req: Request, res: Response) => {
+  try {
+    const orderID = (req.query.p || "") as string;
+
+    const orderItem = await prismaNew.order.update({
+      where: {
+        id: orderID,
+        pending: true,
+      },
+      data: {
+        pending: false,
+      },
+    });
+
+    res.status(200).json({
+      data: orderItem,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al completar la orden" });
+  }
+};
+
 export const deleteOrderItem = async (req: Request, res: Response) => {
   try {
     const orderID = (req.query.p || "") as string;
@@ -363,7 +387,7 @@ export const getOrder = async (req: Request, res: Response) => {
         createdAt: true,
         id: true,
         totalAmount: true,
-        // pending: true,
+        pending: true,
         user: {
           select: {
             id: true,
@@ -384,42 +408,38 @@ export const getOrder = async (req: Request, res: Response) => {
   }
 };
 
-// export const getOrderItemsAdmin = async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params;
+export const getOrderItemsAdmin = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
 
-//     if (!id) {
-//       return res.status(400).json({ message: "El id es requerido" });
-//     }
+    if (!id) {
+      return res.status(400).json({ message: "El id es requerido" });
+    }
 
-//     const items = await prisma.orderItem.findMany({
-//       where: {
-//         orderId: id,
-//       },
-//       select: {
-//         id: true,
-//         createdAt: true,
-//         price: true,
-//         quantity: true,
-//         product: {
-//           select: {
-//             imagen: true,
-//             name: true,
-//             ratingAverage: true,
-//           },
-//         },
-//       },
-//     });
+    const items = await prisma.orderItem.findMany({
+      where: {
+        orderId: id,
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        price: true,
+        quantity: true,
+        ofert: true,
+        dessert: true,
+        gastronomic: true,
+      },
+    });
 
-//     if (!items) {
-//       return res.status(404).json({ message: "Productos no encontrados" });
-//     }
+    if (!items) {
+      return res.status(404).json({ message: "Productos no encontrados" });
+    }
 
-//     return res.status(200).json({
-//       data: items,
-//     });
-//   } catch (error) {
-//     console.log("Error:", error);
-//     res.status(500).send("Internal Server Error");
-//   }
-// };
+    return res.status(200).json({
+      data: items,
+    });
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};

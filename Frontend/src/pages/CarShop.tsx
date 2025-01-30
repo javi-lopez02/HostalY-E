@@ -8,7 +8,7 @@ import {
 import axios, { AxiosError } from "axios";
 import { Spinner } from "@nextui-org/spinner";
 import { toast } from "sonner";
-import { Button, Form, Input, useDisclosure } from "@nextui-org/react";
+import { Button, DatePicker, DateValue, Form, Input, useDisclosure } from "@nextui-org/react";
 import ModalMessage from "../components/Car/ModalMessage";
 import CardOfert from "../components/Car/CardOfert";
 import Card from "../components/Car/Card";
@@ -19,10 +19,11 @@ const CarShop: React.FC = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState<string>();
-  const [email, setEmail] = useState<string>();
+  const [date, setDate] = useState<DateValue | null>();
   const [phone, setPhone] = useState<string>();
 
   const [order, setOrder] = useState<OrderItem[] | null>(null);
+  const [orderId, setOrderId] = useState<string>("");
   const [totalAmount, setTotalAmount] = useState(0);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -34,9 +35,18 @@ const CarShop: React.FC = () => {
     setError(null);
     getOrderRequest()
       .then((res) => {
-        setOrder(res.data.data.orderItems);
-        setTotalAmount(res.data.data.totalAmount);
-        setCount(res.data.data._count.orderItems);
+        if (res.data.data === null) {
+          setOrder([]);
+          setOrderId("");
+          setTotalAmount(0);
+          setCount(0);
+          toast.success("No hay ofertas en su orden")
+        } else {
+          setOrder(res.data.data.orderItems);
+          setOrderId(res.data.data.id);
+          setTotalAmount(res.data.data.totalAmount);
+          setCount(res.data.data._count.orderItems);
+        }
       })
       .catch((error) => {
         if (axios.isAxiosError(error)) {
@@ -91,16 +101,10 @@ const CarShop: React.FC = () => {
     const data = Object.fromEntries(new FormData(event.currentTarget));
 
     const inputName = data["name"] as string;
-    const inputEmail = data["email"] as string;
     const inputPhone = data["phone"] as string;
 
     if (!inputName) {
       toast.error("El nombre es requerido");
-      setLoading(false);
-      return;
-    }
-    if (!inputEmail) {
-      toast.error("El email es requerido");
       setLoading(false);
       return;
     }
@@ -111,7 +115,6 @@ const CarShop: React.FC = () => {
     }
 
     setName(inputName);
-    setEmail(inputEmail);
     setPhone(inputPhone);
     setLoading(false);
     onOpen();
@@ -165,13 +168,13 @@ const CarShop: React.FC = () => {
                     }
                   />
 
-                  <Input
-                    name="email"
+                  <DatePicker
+                    name="date"
                     variant="bordered"
                     color="primary"
-                    label="Email"
+                    onChange={(value) => setDate(value)}
+                    label="Fecha"
                     labelPlacement="inside"
-                    placeholder="example@example.com"
                     className="w-full"
                     endContent={
                       <svg
@@ -338,13 +341,14 @@ const CarShop: React.FC = () => {
                 </div>
               )}
               <ModalMessage
+                id={orderId}
                 count={count}
                 totalAmount={totalAmount}
                 isOpen={isOpen}
                 onClose={onClose}
                 order={order}
                 name={name}
-                email={email}
+                date={date}
                 phone={phone}
               />
               {error && error.map((err) => toast.error(err))}

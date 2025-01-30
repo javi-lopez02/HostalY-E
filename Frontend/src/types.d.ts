@@ -79,6 +79,7 @@ export interface OrderItem {
   id: string;
   price: number;
   quantity: number;
+  pending: boolean;
   ofert: Oferts;
   gastronomic: Gastronomics;
   dessert: Desserts;
