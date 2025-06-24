@@ -6,9 +6,9 @@ import {
   updateGastronomicItemRequest,
 } from "../services/order";
 import axios, { AxiosError } from "axios";
-import { Spinner } from "@nextui-org/spinner";
+import { Spinner } from "@heroui/spinner";
 import { toast } from "sonner";
-import { Button, DatePicker, DateValue, Form, Input, useDisclosure } from "@nextui-org/react";
+import { Button, DatePicker, DateValue, Form, Input, useDisclosure } from "@heroui/react";
 import ModalMessage from "../components/Car/ModalMessage";
 import CardOfert from "../components/Car/CardOfert";
 import Card from "../components/Car/Card";
